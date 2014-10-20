@@ -10,6 +10,8 @@ call plug#begin()
 " Basic configuration
 " ----------------------------------------------------------------------------
 
+let g:vimDir = "~/.nvim"
+
 let mapleader = "," " Set mapleader
 let g:mapleader = ","
 
@@ -86,11 +88,17 @@ function! CloseWindowOrKillBuffer()
 	endif
 endfunction
 
-
 " ----------------------------------------------------------------------------
-" Lean 'n' Clean Neovim Config
+" Basic Backup
 " ----------------------------------------------------------------------------
 
+if exists('+undofile') " Nice persistent undos
+	set undofile
+	execute "set undodir=".vimDir."/.cache/undo"
+endif
+
+call EnsureExists(vimDir.'~/.vim/.cache')
+call EnsureExists(&undodir)
 
 " ----------------------------------------------------------------------------
 " Lean 'n' Clean Neovim Config
