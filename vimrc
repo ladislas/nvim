@@ -6,7 +6,6 @@ set nocompatible " Be IMproved
 
 call plug#begin()
 
-
 " ----------------------------------------------------------------------------
 " Basic Vim Configuration
 " ----------------------------------------------------------------------------
@@ -90,10 +89,87 @@ set noerrorbells " Turn of error notifications
 set novisualbell
 set t_vb=
 
+set nofoldenable " Disable folding
+set background=dark
+
+" In case we run a GUI
+if has('gui_running')
+	set lines=999 columns=9999
+
+	set guioptions+=t
+	set guioptions-=T
+
+	if g:is_macvim
+		set gfn=Sauce\ Code\ Powerline\ Light:h12
+		set transparency=2
+	endif
+
+	if has('gui_gtk')
+		set gfn=Sauce\ Code\ Powerline\ Light:h12
+	endif
+else
+	if $COLORTERM == 'gnome-terminal'
+		set t_Co=256
+	endif
+
+	if $TERM_PROGRAM == 'iTerm.app'
+		" different cursors for insert vs normal mode
+		let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+		let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+	endif
+endif
+
 
 " ----------------------------------------------------------------------------
-" Lean 'n' Clean Neovim Config
+" Unite plugins
 " ----------------------------------------------------------------------------
+
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+Plug 'Shougo/neomru.vim'
+Plug 'Shougo/unite.vim'
+
+" Unite setup
+let g:unite_data_directory=vimDir.'/.cache/unite'
+let g:unite_enable_start_insert=1
+let g:unite_source_history_yank_enable=1
+let g:unite_source_rec_max_cache_files=5000
+let g:unite_prompt='» '
+
+if executable('ack')
+	let g:unite_source_grep_command='ack'
+	let g:unite_source_grep_default_opts='--no-heading --no-color -a -C4'
+	let g:unite_source_grep_recursive_opt=''
+endif
+
+function! s:unite_settings()
+	nmap <buffer> Q <plug>(unite_exit)
+	nmap <buffer> <esc> <plug>(unite_exit)
+	imap <buffer> <esc> <plug>(unite_exit)
+endfunction
+
+autocmd FileType unite call s:unite_settings()
+
+" Set Unite leader
+nmap <space> [unite]
+nnoremap [unite] <nop>
+
+" Set useful Unite mappings
+nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
+nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
+nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
+nnoremap <silent> [unite]/ :<C-u>Unite -no-quit -buffer-name=search grep:.<cr>
+nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
+nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
+
+" Related plugins
+Plug 'osyo-manga/unite-airline_themes', {'on':{'unite_sources':'airline_themes'}}
+Plug 'ujihisa/unite-colorscheme', {'on':{'unite_sources':'colorscheme'}}
+
+" Related plugins mappings
+nnoremap <silent> [unite]a :<C-u>Unite -winheight=10 -auto-preview -buffer-name=airline_themes airline_themes<cr>
+nnoremap <silent> [unite]c :<C-u>Unite -winheight=10 -auto-preview -buffer-name=colorschemes colorscheme<cr>
+
+
 
 " ----------------------------------------------------------------------------
 " Lean 'n' Clean Neovim Config
@@ -154,7 +230,7 @@ if exists('+undofile') " Nice persistent undos
 	execute "set undodir=".vimDir."/.cache/undo"
 endif
 
-call EnsureExists(vimDir.'~/.vim/.cache')
+call EnsureExists(vimDir.'/.cache')
 call EnsureExists(&undodir)
 
 
@@ -190,12 +266,6 @@ call EnsureExists(&undodir)
 " ----------------------------------------------------------------------------
 " Lean 'n' Clean Neovim Config
 " ----------------------------------------------------------------------------
-
-" Unite
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-Plug 'Shougo/neomru.vim'
-Plug 'Shougo/unite.vim'
-
 " All the color schemes in the world!
 Plug 'daylerees/colour-schemes'
 
