@@ -11,6 +11,7 @@ call plug#begin()
 " ----------------------------------------------------------------------------
 
 let g:vimDir = expand('%:p:h')
+let g:plugDir = vimDir.'/plugged'
 
 let mapleader = "," " Set mapleader
 let g:mapleader = ","
@@ -170,7 +171,7 @@ nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
 Plug 'bufkill.vim'
 Plug 'mhinz/vim-startify'
 
-" Startify setup
+" Vim Startify setup
 let g:startify_session_dir = vimDir.'/.cache/sessions'
 let g:startify_change_to_vcs_root = 1
 let g:startify_show_sessions = 1
@@ -185,7 +186,7 @@ Plug 'bling/vim-airline'
 Plug 'zhaocai/GoldenView.Vim', {'on': '<Plug>ToggleGoldenViewAutoResize'}
 Plug 'oblitum/rainbow'
 
-" Airline setup
+" Vim Airline setup
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep=' '
@@ -201,21 +202,70 @@ au FileType h,c,cpp,objc,objcpp,go,python,ruby,javascript,java,vim call rainbow#
 
 
 " ----------------------------------------------------------------------------
+" Autocompletion & Snippets Plugins
+" ----------------------------------------------------------------------------
+
+if has('nvim')
+	runtime! plugin/python_setup.vim
+endif
+
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
+Plug 'SirVer/ultisnips'
+Plug 'ladislas/vim-snippets'
+
+" YouCompleteMe setup
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_filetype_blacklist={'unite': 1}
+let g:ycm_min_num_of_chars_for_completion = 1
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+" UltiSnips setup
+let g:UltiSnipsExpandTrigger='<c-k>'
+let g:UltiSnipsJumpForwardTrigger='<c-k>'
+let g:UltiSnipsJumpBackwardTrigger='<c-s-k>'
+let g:UltiSnipsSnippetsDir=plugDir.'/vim-snippets/UltiSnips'
+
+" Better integration between YouCompleteMe and UltiSnips
+autocmd BufEnter * exec "inoremap <buffer> <silent> " . g:UltiSnipsExpandTrigger . " <c-r>=g:UltiSnips_Complete()<CR>"
+
+
+" ----------------------------------------------------------------------------
 " Editing Plugins
 " ----------------------------------------------------------------------------
 
 Plug 'editorconfig/editorconfig-vim'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-endwise'
+Plug 'tomtom/tcomment_vim'
+Plug 'kristijanhusak/vim-multiple-cursors'
+Plug 'chrisbra/NrrwRgn'
+Plug 'jiangmiao/auto-pairs'
 
 
 " ----------------------------------------------------------------------------
-" Core Plugins
+" Language Specific Plugins
 " ----------------------------------------------------------------------------
+
+" C++
+Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
+Plug 'derekwyatt/vim-protodef', { 'for': ['cpp', 'c', 'h'] }
+Plug 'derekwyatt/vim-fswitch', { 'for': ['cpp', 'c'] }
 
 
 " ----------------------------------------------------------------------------
-" Core Plugins
+" Colors Themes
 " ----------------------------------------------------------------------------
 
+Plug 'daylerees/colour-schemes'
+Plug 'morhetz/gruvbox'
+Plug 'effkay/argonaut.vim'
+
+" Gruvbox setup
+let g:gruvbox_bold = 0
+if !has("gui_running")
+	let g:gruvbox_italic = 0
+endif
 
 " ----------------------------------------------------------------------------
 " Core Plugins
@@ -281,8 +331,73 @@ call EnsureExists(&undodir)
 
 
 " ----------------------------------------------------------------------------
-" Lean 'n' Clean Neovim Config
+" Mappings
 " ----------------------------------------------------------------------------
+
+" Call basic functions
+nmap <leader>f$ :call StripTrailingWhitespace()<CR>
+nmap <leader>fef :call PreserveCursorPosition("normal gg=G")<CR>
+vmap <leader>s :sort<cr>
+
+" Quick save
+nnoremap <leader>w :w<cr>
+
+" Remap arrow keys
+nnoremap <down> :tabprev<CR>
+nnoremap <left> :bprev<CR>
+nnoremap <right> :bnext<CR>
+nnoremap <up> :tabnext<CR>
+
+" Change cursor position in insert mode
+inoremap <C-h> <left>
+inoremap <C-l> <right>
+inoremap <C-k> <up>
+inoremap <C-j> <down>
+
+if mapcheck('<space>/') == ''
+	nnoremap <space>/ :vimgrep //gj **/*<left><left><left><left><left><left><left><left>
+endif
+
+" Sane regex search
+nnoremap / /\v
+vnoremap / /\v
+nnoremap ? ?\v
+vnoremap ? ?\v
+nnoremap :s/ :s/\v
+
+" Turn search highlight on and off
+nnoremap <BS> :set hlsearch! hlsearch?<cr>
+
+" Screen line scroll
+nnoremap <silent> j gj
+nnoremap <silent> k gk
+
+" Reselect visual block after indent
+vnoremap < <gv
+vnoremap > >gv
+
+" Toggles smart indenting while pasting, A.K.A lifesaver
+set pastetoggle=<F3>
+
+" Reselect last paste
+nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+" Make Y consistent with C and D. See :help Y.
+nnoremap Y y$
+
+" Hide annoying quit message
+nnoremap <C-c> <C-c>:echo<cr>
+
+" Window killer
+nnoremap <silent> Q :call CloseWindowOrKillBuffer()<cr>
+
+" Quick buffer open
+nnoremap gb :ls<cr>:e #
+
+" Tab shortcuts
+map <leader>tn :tabnew<CR>
+map <leader>tc :tabclose<CR>
+
 
 " ----------------------------------------------------------------------------
 " Lean 'n' Clean Neovim Config
@@ -312,8 +427,6 @@ call EnsureExists(&undodir)
 " ----------------------------------------------------------------------------
 " Lean 'n' Clean Neovim Config
 " ----------------------------------------------------------------------------
-" All the color schemes in the world!
-Plug 'daylerees/colour-schemes'
 
 
 
@@ -329,6 +442,8 @@ call plug#end()
 
 
 
+" Set colorscheme
+colorscheme gruvbox
 
 " Finish tuning Vim
 filetype plugin indent on
