@@ -6,8 +6,9 @@ set nocompatible " Be IMproved
 
 call plug#begin()
 
+
 " ----------------------------------------------------------------------------
-" Basic configuration
+" Basic Vim Configuration
 " ----------------------------------------------------------------------------
 
 let g:vimDir = "~/.nvim"
@@ -33,16 +34,71 @@ set modelines=5
 
 set backspace=indent,eol,start " Makes backspace behave like most editors
 
-set hlsearch " Highlight search
-set incsearch " Highlight pattern matches as you type
+set hlsearch   " Highlight search
+set incsearch  " Highlight pattern matches as you type
 set ignorecase " Ignore case when using a search pattern
-set smartcase " Override 'ignorecase' when pattern has upper case character
+set smartcase  " Override 'ignorecase' when pattern has upper case character
 
 " Set grep tool
 if executable('ack')
 	set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
 	set grepformat=%f:%l:%c:%m
 endif
+
+
+" ----------------------------------------------------------------------------
+" Basic UI Configuration
+" ----------------------------------------------------------------------------
+
+set number       " Show line numbers
+set showcmd      " Show last command
+set lazyredraw   " Don't redraw when not needed
+set laststatus=2 " Always show the status line
+set noshowmode   " Hide the mode on last line as we use Vim Airline
+
+set cursorline " Highlight current line
+autocmd WinLeave * setlocal nocursorline
+autocmd WinEnter * setlocal cursorline
+
+set autoindent " Auto indent line on CR
+set smarttab   " Add tab and backspace like you'd like to
+set shiftround " Always indent with a multiple of shiftwidth
+
+set tabstop=4 " Tabs are 4 spaces long and are tabs, not spaces...
+set softtabstop=4
+set shiftwidth=4
+set noexpandtab
+
+set list " Show invisible characters
+set listchars=tab:│\ ,trail:•,extends:❯,precedes:❮
+
+set linebreak " Show linebreaks
+let &showbreak='↪ '
+
+set showmatch " Hightlight brackets
+set matchtime=2
+
+set wildmenu           " Tab complete commands
+set wildmode=list:full " Show full list of commands
+set wildignorecase
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store
+
+set splitbelow " Split windows below
+set splitright " Split windows right
+
+set noerrorbells " Turn of error notifications
+set novisualbell
+set t_vb=
+
+
+" ----------------------------------------------------------------------------
+" Lean 'n' Clean Neovim Config
+" ----------------------------------------------------------------------------
+
+" ----------------------------------------------------------------------------
+" Lean 'n' Clean Neovim Config
+" ----------------------------------------------------------------------------
+
 
 " ----------------------------------------------------------------------------
 " Basic useful functions
@@ -88,6 +144,7 @@ function! CloseWindowOrKillBuffer()
 	endif
 endfunction
 
+
 " ----------------------------------------------------------------------------
 " Basic Backup
 " ----------------------------------------------------------------------------
@@ -99,6 +156,20 @@ endif
 
 call EnsureExists(vimDir.'~/.vim/.cache')
 call EnsureExists(&undodir)
+
+
+" ----------------------------------------------------------------------------
+" Lean 'n' Clean Neovim Config
+" ----------------------------------------------------------------------------
+
+" ----------------------------------------------------------------------------
+" Lean 'n' Clean Neovim Config
+" ----------------------------------------------------------------------------
+
+" ----------------------------------------------------------------------------
+" Lean 'n' Clean Neovim Config
+" ----------------------------------------------------------------------------
+
 
 " ----------------------------------------------------------------------------
 " Lean 'n' Clean Neovim Config
