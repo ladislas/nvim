@@ -10,7 +10,7 @@ call plug#begin()
 " Basic Vim Configuration
 " ----------------------------------------------------------------------------
 
-let g:vimDir = "~/.nvim"
+let g:vimDir = expand('%:p:h')
 
 let mapleader = "," " Set mapleader
 let g:mapleader = ","
@@ -121,7 +121,7 @@ endif
 
 
 " ----------------------------------------------------------------------------
-" Unite plugins
+" Unite Plugins
 " ----------------------------------------------------------------------------
 
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
@@ -142,6 +142,8 @@ if executable('ack')
 endif
 
 function! s:unite_settings()
+	imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+	imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
 	nmap <buffer> Q <plug>(unite_exit)
 	nmap <buffer> <esc> <plug>(unite_exit)
 	imap <buffer> <esc> <plug>(unite_exit)
@@ -157,22 +159,66 @@ nnoremap [unite] <nop>
 nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
 nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
 nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
-nnoremap <silent> [unite]/ :<C-u>Unite -no-quit -buffer-name=search grep:.<cr>
 nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
 nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
 
-" Related plugins
-Plug 'osyo-manga/unite-airline_themes', {'on':{'unite_sources':'airline_themes'}}
-Plug 'ujihisa/unite-colorscheme', {'on':{'unite_sources':'colorscheme'}}
 
-" Related plugins mappings
-nnoremap <silent> [unite]a :<C-u>Unite -winheight=10 -auto-preview -buffer-name=airline_themes airline_themes<cr>
-nnoremap <silent> [unite]c :<C-u>Unite -winheight=10 -auto-preview -buffer-name=colorschemes colorscheme<cr>
+" ----------------------------------------------------------------------------
+" Core Plugins
+" ----------------------------------------------------------------------------
 
+Plug 'bufkill.vim'
+Plug 'mhinz/vim-startify'
+
+" Startify setup
+let g:startify_session_dir = vimDir.'/.cache/sessions'
+let g:startify_change_to_vcs_root = 1
+let g:startify_show_sessions = 1
+nnoremap <F1> :Startify<cr>
 
 
 " ----------------------------------------------------------------------------
-" Lean 'n' Clean Neovim Config
+" UI Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'bling/vim-airline'
+Plug 'zhaocai/GoldenView.Vim', {'on': '<Plug>ToggleGoldenViewAutoResize'}
+Plug 'oblitum/rainbow'
+
+" Airline setup
+let g:airline_powerline_fonts = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep=' '
+let g:airline#extensions#tabline#left_alt_sep='¦'
+
+" GoldenView setup
+let g:goldenview__enable_default_mapping=0
+nmap <F4> <Plug>ToggleGoldenViewAutoResize
+
+" Rainbow setup
+let g:rainbow_active = 1
+au FileType h,c,cpp,objc,objcpp,go,python,ruby,javascript,java,vim call rainbow#load()
+
+
+" ----------------------------------------------------------------------------
+" Editing Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'editorconfig/editorconfig-vim'
+
+
+" ----------------------------------------------------------------------------
+" Core Plugins
+" ----------------------------------------------------------------------------
+
+
+" ----------------------------------------------------------------------------
+" Core Plugins
+" ----------------------------------------------------------------------------
+
+
+" ----------------------------------------------------------------------------
+" Core Plugins
 " ----------------------------------------------------------------------------
 
 
