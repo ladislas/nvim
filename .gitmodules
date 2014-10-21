@@ -1,6 +1,3 @@
 [submodule "autoload"]
 	path = autoload
 	url = https://github.com/junegunn/vim-plug
-[submodule "pythonx"]
-	path = pythonx
-	url = https://gist.github.com/tarruda/42f5236449857278f911
