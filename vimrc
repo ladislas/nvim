@@ -13,7 +13,7 @@ call plug#begin()
 let g:vimrcPath = $MYVIMRC
 let g:vimPath = system('realpath '.g:vimrcPath)
 let g:vimDir = fnamemodify(g:vimPath, ':h')
-let g:plugDir = vimDir.'/plugged'
+let g:plugDir = g:vimDir.'/plugged'
 
 let mapleader = "," " Set mapleader
 let g:mapleader = ","
@@ -139,7 +139,7 @@ Plug 'Shougo/neomru.vim'
 Plug 'Shougo/unite.vim'
 
 " Unite setup
-let g:unite_data_directory=vimDir.'/.cache/unite'
+let g:unite_data_directory=g:vimDir.'/.cache/unite'
 let g:unite_enable_start_insert=1
 let g:unite_source_history_yank_enable=1
 let g:unite_source_rec_max_cache_files=5000
@@ -182,7 +182,7 @@ Plug 'mhinz/vim-startify'
 Plug 'duff/vim-bufonly'
 
 " Vim Startify setup
-let g:startify_session_dir = vimDir.'/.cache/sessions'
+let g:startify_session_dir = g:vimDir.'/.cache/sessions'
 let g:startify_change_to_vcs_root = 1
 let g:startify_show_sessions = 1
 nnoremap <F1> :Startify<cr>
@@ -260,7 +260,7 @@ let NERDTreeShowLineNumbers=1
 let NERDTreeChDirMode=2
 let NERDTreeShowBookmarks=0
 let NERDTreeIgnore=['\.hg', '.DS_Store']
-let NERDTreeBookmarksFile=expand(vimDir.'/.cache/NERDTree/NERDTreeBookmarks')
+let NERDTreeBookmarksFile=expand(g:vimDir.'/.cache/NERDTree/NERDTreeBookmarks')
 nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :NERDTreeFind<CR>
 
@@ -417,10 +417,10 @@ endfunction
 
 if exists('+undofile') " Nice persistent undos
 	set undofile
-	execute "set undodir=".vimDir."/.cache/undo"
+	execute "set undodir=".g:vimDir."/.cache/undo"
 endif
 
-call EnsureExists(vimDir.'/.cache')
+call EnsureExists(g:vimDir.'/.cache')
 call EnsureExists(&undodir)
 
 
