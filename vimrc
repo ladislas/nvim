@@ -10,7 +10,9 @@ call plug#begin()
 " Basic Vim Configuration
 " ----------------------------------------------------------------------------
 
-let g:vimDir = expand('%:p:h')
+let g:vimrcPath = $MYVIMRC
+let g:vimPath = system('realpath '.g:vimrcPath)
+let g:vimDir = fnamemodify(g:vimPath, ':h')
 let g:plugDir = vimDir.'/plugged'
 
 let mapleader = "," " Set mapleader
@@ -439,6 +441,15 @@ nnoremap <down> :tabprev<CR>
 nnoremap <left> :bprev<CR>
 nnoremap <right> :bnext<CR>
 nnoremap <up> :tabnext<CR>
+
+" Windows/Buffers motion keys
+nnoremap <leader>v <C-w>v<C-w>l
+nnoremap <leader>s <C-w>s
+nnoremap <leader>vsa :vert sba<cr>
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 " Change cursor position in insert mode
 inoremap <C-h> <left>
