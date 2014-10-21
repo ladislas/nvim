@@ -109,7 +109,7 @@ if has('gui_running')
 	set guioptions+=t
 	set guioptions-=T
 
-	if g:is_macvim
+	if has('gui_macvim')
 		set gfn=Sauce\ Code\ Powerline\ Light:h12
 		set transparency=2
 	endif
@@ -245,7 +245,7 @@ autocmd BufEnter * exec "inoremap <buffer> <silent> " . g:UltiSnipsExpandTrigger
 
 Plug 'mileszs/ack.vim'
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
-Plug 'Xuyuanp/git-nerdtree', {'autoload':{'commands':['NERDTreeToggle','NERDTreeFind']}}
+Plug 'Xuyuanp/git-nerdtree', {'on': ['NERDTreeToggle','NERDTreeFind']}
 
 " Undotree setup
 let g:undotree_SplitLocation='botright'
