@@ -26,6 +26,8 @@ set encoding=utf-8 " Set right encoding and formats
 set fileformat=unix
 set nrformats-=octal
 
+set spelllang=en_us,fr " Spell check english and french
+
 set hidden " Deal nicely with buffers and switch without saving
 set autoread
 
@@ -33,6 +35,11 @@ set modeline " Allow modeline for per file formating using
 set modelines=5
 
 set backspace=indent,eol,start " Makes backspace behave like most editors
+
+set clipboard=unnamed " Copy to clipboard
+if has('nvim')        " activate clipboard for neovim
+	set unnamedclip
+endif
 
 set hlsearch   " Highlight search
 set incsearch  " Highlight pattern matches as you type
@@ -170,6 +177,7 @@ nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
 
 Plug 'bufkill.vim'
 Plug 'mhinz/vim-startify'
+Plug 'duff/vim-bufonly'
 
 " Vim Startify setup
 let g:startify_session_dir = vimDir.'/.cache/sessions'
@@ -230,17 +238,62 @@ autocmd BufEnter * exec "inoremap <buffer> <silent> " . g:UltiSnipsExpandTrigger
 
 
 " ----------------------------------------------------------------------------
+" Navigation Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'mileszs/ack.vim'
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
+Plug 'Xuyuanp/git-nerdtree', {'autoload':{'commands':['NERDTreeToggle','NERDTreeFind']}}
+
+" Undotree setup
+let g:undotree_SplitLocation='botright'
+let g:undotree_SetFocusWhenToggle=1
+nnoremap <silent> <F5> :UndotreeToggle<CR>
+
+" NERDTree setup
+let NERDTreeShowHidden=0
+let NERDTreeQuitOnOpen=0
+let g:NERDTreeUseSimpleIndicator=1
+let NERDTreeShowLineNumbers=1
+let NERDTreeChDirMode=2
+let NERDTreeShowBookmarks=0
+let NERDTreeIgnore=['\.hg', '.DS_Store']
+let NERDTreeBookmarksFile=expand(vimDir.'/.cache/NERDTree/NERDTreeBookmarks')
+nnoremap <F2> :NERDTreeToggle<CR>
+nnoremap <F3> :NERDTreeFind<CR>
+
+
+" ----------------------------------------------------------------------------
 " Editing Plugins
 " ----------------------------------------------------------------------------
 
 Plug 'editorconfig/editorconfig-vim'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-endwise'
-Plug 'tomtom/tcomment_vim'
 Plug 'kristijanhusak/vim-multiple-cursors'
+Plug 'tomtom/tcomment_vim'
+
 Plug 'chrisbra/NrrwRgn'
+Plug 'tpope/vim-endwise'
 Plug 'jiangmiao/auto-pairs'
+
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+
+Plug 'godlygeek/tabular'
+
+" Tabularize setup
+nmap <Leader>a& :Tabularize /&<CR>
+vmap <Leader>a& :Tabularize /&<CR>
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+nmap <Leader>a: :Tabularize /:<CR>
+vmap <Leader>a: :Tabularize /:<CR>
+nmap <Leader>a:: :Tabularize /:\zs<CR>
+vmap <Leader>a:: :Tabularize /:\zs<CR>
+nmap <Leader>a, :Tabularize /,<CR>
+vmap <Leader>a, :Tabularize /,<CR>
+nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
 
 
 " ----------------------------------------------------------------------------
@@ -251,6 +304,26 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
 Plug 'derekwyatt/vim-protodef', { 'for': ['cpp', 'c', 'h'] }
 Plug 'derekwyatt/vim-fswitch', { 'for': ['cpp', 'c'] }
+
+" Markdown
+Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc', 'md'] }
+Plug 'vim-pandoc/vim-pantondoc', { 'for': ['markdown', 'pandoc', 'md'] }
+Plug 'suan/vim-instant-markdown', { 'for': ['markdown', 'pandoc', 'md'] }
+
+" Pandoc setup
+let g:pandoc_use_conceal = 1
+let g:pandoc_syntax_dont_use_conceal_for_rules = ['block', 'codeblock_start', 'codeblock_delim']
+let g:pandoc_syntax_user_cchars = {'li': '*'}
+let g:pantondoc_use_pandoc_markdown = 1
+let g:instant_markdown_slow = 1
+let g:instant_markdown_autostart = 0
+
+
+" ----------------------------------------------------------------------------
+" Text Object Plugins
+" ----------------------------------------------------------------------------
+
+" n/a
 
 
 " ----------------------------------------------------------------------------
@@ -267,9 +340,28 @@ if !has("gui_running")
 	let g:gruvbox_italic = 0
 endif
 
+
 " ----------------------------------------------------------------------------
-" Core Plugins
+" Source Cotrol Management Plugins
 " ----------------------------------------------------------------------------
+
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+
+" Gitgutter setup
+let g:gitgutter_realtime=0
+
+" Fugitive setup
+nnoremap <silent> <leader>gs :Gstatus<CR>
+nnoremap <silent> <leader>gd :Gdiff<CR>
+nnoremap <silent> <leader>gc :Gcommit<CR>
+nnoremap <silent> <leader>gb :Gblame<CR>
+nnoremap <silent> <leader>gl :Glog<CR>
+nnoremap <silent> <leader>gp :Git push<CR>
+nnoremap <silent> <leader>gw :Gwrite<CR>
+nnoremap <silent> <leader>gr :Gremove<CR>
+autocmd FileType gitcommit nmap <buffer> U :Git checkout -- <C-r><C-g><CR>
+autocmd BufReadPost fugitive://* set bufhidden=delete
 
 
 " ----------------------------------------------------------------------------
@@ -398,14 +490,8 @@ nnoremap gb :ls<cr>:e #
 map <leader>tn :tabnew<CR>
 map <leader>tc :tabclose<CR>
 
-
-" ----------------------------------------------------------------------------
-" Lean 'n' Clean Neovim Config
-" ----------------------------------------------------------------------------
-
-" ----------------------------------------------------------------------------
-" Lean 'n' Clean Neovim Config
-" ----------------------------------------------------------------------------
+" Spell check on/off
+nmap <silent> <leader>sp :set spell!<CR>
 
 
 " ----------------------------------------------------------------------------
@@ -416,6 +502,15 @@ map <leader>tc :tabclose<CR>
 " Lean 'n' Clean Neovim Config
 " ----------------------------------------------------------------------------
 
+
+" ----------------------------------------------------------------------------
+" Lean 'n' Clean Neovim Config
+" ----------------------------------------------------------------------------
+
+" ----------------------------------------------------------------------------
+" Lean 'n' Clean Neovim Config
+" ----------------------------------------------------------------------------
+
 " ----------------------------------------------------------------------------
 " Lean 'n' Clean Neovim Config
 " ----------------------------------------------------------------------------
@@ -427,20 +522,9 @@ map <leader>tc :tabclose<CR>
 " ----------------------------------------------------------------------------
 " Lean 'n' Clean Neovim Config
 " ----------------------------------------------------------------------------
-
-
-
-
 
 
 call plug#end()
-
-
-
-
-
-
-
 
 " Set colorscheme
 colorscheme gruvbox
