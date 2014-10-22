@@ -38,7 +38,6 @@ set modelines=5
 
 set backspace=indent,eol,start " Makes backspace behave like most editors
 
-set clipboard=unnamed " Copy to clipboard
 if has('nvim')        " activate clipboard for neovim
 	set unnamedclip
 endif
@@ -236,7 +235,7 @@ let g:UltiSnipsJumpBackwardTrigger='<c-s-k>'
 let g:UltiSnipsSnippetsDir=plugDir.'/vim-snippets/UltiSnips'
 
 " Better integration between YouCompleteMe and UltiSnips
-autocmd BufEnter * exec "inoremap <buffer> <silent> " . g:UltiSnipsExpandTrigger . " <c-r>=g:UltiSnips_Complete()<CR>"
+" autocmd BufEnter * exec "inoremap <buffer> <silent> " . g:UltiSnipsExpandTrigger . " <c-r>=g:UltiSnips_Complete()<CR>"
 
 
 " ----------------------------------------------------------------------------
@@ -420,8 +419,16 @@ if exists('+undofile') " Nice persistent undos
 	execute "set undodir=".g:vimDir."/.cache/undo"
 endif
 
+set backup " Keep backups
+execute "set backupdir=".g:vimDir."/.cache/backup"
+
+set swapfile " Keep swap files, can save your life"
+execute "set directory=".g:vimDir."/.cache/swap"
+
 call EnsureExists(g:vimDir.'/.cache')
 call EnsureExists(&undodir)
+call EnsureExists(&backupdir)
+call EnsureExists(&directory)
 
 
 " ----------------------------------------------------------------------------
