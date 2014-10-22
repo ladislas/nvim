@@ -11,6 +11,7 @@ On OS X it's pretty easy:
 - `brew install python`
 - install [Neovim](http://neovim.org/) (*recommended*) or Vim or Macvim
 - `git clone https://github.com/ladislas/nvim ~/.nvim`
+- `cd ~/.nvim && git submodule init && git submodule update`
 - `ln -s ~/nvim/vimrc ~/.nvimrc`
 - open Neovim with `nvim`, press `:` and then type `PlugInstall`
 - wait for the process to complete
