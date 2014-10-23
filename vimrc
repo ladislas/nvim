@@ -206,8 +206,7 @@ let g:goldenview__enable_default_mapping=0
 nmap <F4> <Plug>ToggleGoldenViewAutoResize
 
 " Rainbow setup
-let g:rainbow_active = 1
-au FileType h,c,cpp,objc,objcpp,go,python,ruby,javascript,java,vim call rainbow#load()
+au FileType c,cpp,objc,objcpp,python,javascript call rainbow#load()
 
 
 " ----------------------------------------------------------------------------
@@ -318,6 +317,7 @@ let g:pandoc_syntax_user_cchars = {'li': '*'}
 let g:pantondoc_use_pandoc_markdown = 1
 let g:instant_markdown_slow = 1
 let g:instant_markdown_autostart = 0
+autocmd BufRead,BufNewFile *.md setlocal filetype=pandoc.markdown " Automatically set filetype for .md files"
 
 
 " ----------------------------------------------------------------------------
