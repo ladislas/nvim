@@ -214,7 +214,7 @@ au FileType c,cpp,objc,objcpp,python,javascript call rainbow#load()
 " ----------------------------------------------------------------------------
 
 if has('nvim')
-	runtime! plugin/python_setup.vim
+	runtime! python_setup.vim
 endif
 
 Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
