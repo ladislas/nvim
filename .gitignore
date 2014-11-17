@@ -2,3 +2,4 @@ plugged
 .DS_Store
 .cache
 *.pyc
+.netrwhist
