@@ -310,6 +310,9 @@ Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc', 'md'] }
 Plug 'vim-pandoc/vim-pantondoc', { 'for': ['markdown', 'pandoc', 'md'] }
 Plug 'suan/vim-instant-markdown', { 'for': ['markdown', 'pandoc', 'md'] }
 
+" Python
+Plug 'klen/python-mode', { 'for': ['python'] }
+
 " Pandoc setup
 let g:pandoc_use_conceal = 1
 let g:pandoc_syntax_dont_use_conceal_for_rules = ['block', 'codeblock_start', 'codeblock_delim']
