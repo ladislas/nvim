@@ -39,7 +39,8 @@ set modelines=5
 set backspace=indent,eol,start " Makes backspace behave like most editors
 
 if has('nvim')        " activate clipboard for neovim
-	set unnamedclip
+	set clipboard=unnamed
+	" set unnamedclip
 endif
 
 set hlsearch   " Highlight search
