@@ -166,11 +166,11 @@ nmap <space> [unite]
 nnoremap [unite] <nop>
 
 " Set useful Unite mappings
-nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
+nnoremap <silent> [unite]t :<C-u>Unite -auto-resize -buffer-name=files file<cr>
+nnoremap <silent> [unite]y :<C-u>Unite -auto-resize -buffer-name=yanks history/yank<cr>
 nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
 nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
 nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
-nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
 
 
 " ----------------------------------------------------------------------------
@@ -307,9 +307,10 @@ Plug 'derekwyatt/vim-protodef', { 'for': ['cpp', 'c', 'h'] }
 Plug 'derekwyatt/vim-fswitch', { 'for': ['cpp', 'c'] }
 
 " Markdown
-Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc', 'md'] }
-Plug 'vim-pandoc/vim-pantondoc', { 'for': ['markdown', 'pandoc', 'md'] }
-Plug 'suan/vim-instant-markdown', { 'for': ['markdown', 'pandoc', 'md'] }
+autocmd BufRead,BufNewFile *.md setlocal filetype=pandoc.markdown " Automatically set filetype for .md files"
+Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
+Plug 'vim-pandoc/vim-pantondoc', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
+Plug 'shime/vim-livedown', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 
 " Python
 Plug 'klen/python-mode', { 'for': ['python'] }
@@ -321,8 +322,12 @@ let g:pandoc_syntax_user_cchars = {'li': '*'}
 let g:pantondoc_use_pandoc_markdown = 1
 let g:instant_markdown_slow = 1
 let g:instant_markdown_autostart = 0
-autocmd BufRead,BufNewFile *.md setlocal filetype=pandoc.markdown " Automatically set filetype for .md files"
 
+" Livedown setup
+let g:livedown_autorun = 0
+let g:livedown_open = 1
+let g:livedown_port = 1337
+map <leader>gm :call LivedownPreview()<CR>
 
 " ----------------------------------------------------------------------------
 " Text Object Plugins
