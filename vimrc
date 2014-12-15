@@ -229,7 +229,7 @@ let g:ycm_min_num_of_chars_for_completion = 1
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " UltiSnips setup
-let g:UltiSnipsExpandTrigger='<c-k>'
+let g:UltiSnipsExpandTrigger='<c-e>'
 let g:UltiSnipsJumpForwardTrigger='<c-j>'
 let g:UltiSnipsJumpBackwardTrigger='<c-k>'
 let g:UltiSnipsSnippetsDir=plugDir.'/vim-snippets/UltiSnips'
@@ -240,11 +240,12 @@ let g:UltiSnipsSnippetsDir=plugDir.'/vim-snippets/UltiSnips'
 " ----------------------------------------------------------------------------
 
 Plug 'mileszs/ack.vim'
-Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
-Plug 'Xuyuanp/git-nerdtree', {'on': ['NERDTreeToggle','NERDTreeFind']}
+Plug 'mbbill/undotree'
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'Xuyuanp/nerdtree-git-plugin' ", {'on': ['NERDTreeToggle','NERDTreeFind']}
 
 " Undotree setup
-let g:undotree_SplitLocation='botright'
+let g:undotree_WindowLayout='botright'
 let g:undotree_SetFocusWhenToggle=1
 nnoremap <silent> <F5> :UndotreeToggle<CR>
 
@@ -311,6 +312,11 @@ Plug 'shime/vim-livedown', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 
 " Python
 Plug 'klen/python-mode', { 'for': ['python'] }
+
+" Html / CSS / Js
+Plug 'othree/html5.vim', { 'for': ['html', 'hbs'] }
+Plug 'skammer/vim-css-color', {'for': ['less', 'scss', 'sass']}
+Plug 'cakebaker/scss-syntax.vim', {'for': ['scss', 'sass']}
 
 " Pandoc setup
 let g:pandoc_use_conceal = 1
@@ -395,7 +401,7 @@ endfunction
 
 function! EnsureExists(path)
 	if !isdirectory(expand(a:path))
-		call mkdir(expand(a:path))
+		call mkdir(expand(a:path), 'p')
 	endif
 endfunction
 
@@ -435,6 +441,7 @@ call EnsureExists(g:vimDir.'/.cache')
 call EnsureExists(&undodir)
 call EnsureExists(&backupdir)
 call EnsureExists(&directory)
+call EnsureExists(g:vimDir.'/.cache/NERDTree/NERDTreeBookmarks')
 
 
 " ----------------------------------------------------------------------------
