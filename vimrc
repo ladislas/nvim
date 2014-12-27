@@ -305,7 +305,7 @@ Plug 'derekwyatt/vim-protodef', { 'for': ['cpp', 'c', 'h'] }
 Plug 'derekwyatt/vim-fswitch', { 'for': ['cpp', 'c'] }
 
 " Markdown
-autocmd BufRead,BufNewFile *.md setlocal filetype=pandoc.markdown " Automatically set filetype for .md files"
+autocmd BufRead,BufNewFile *.md,*.markdown setlocal filetype=pandoc.markdown " Automatically set filetype for Markdown files"
 Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 Plug 'vim-pandoc/vim-pantondoc', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 Plug 'shime/vim-livedown', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
@@ -316,7 +316,8 @@ Plug 'klen/python-mode', { 'for': ['python'] }
 " Html / CSS / Js
 Plug 'othree/html5.vim', { 'for': ['html', 'hbs'] }
 Plug 'skammer/vim-css-color', {'for': ['less', 'scss', 'sass']}
-Plug 'cakebaker/scss-syntax.vim', {'for': ['scss', 'sass']}
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'PProvost/vim-markdown-jekyll', {'for': ['html', 'hbs']}
 
 " Pandoc setup
 let g:pandoc_use_conceal = 1
