@@ -213,9 +213,9 @@ au FileType c,cpp,objc,objcpp,python,javascript call rainbow#load()
 " Autocompletion & Snippets Plugins
 " ----------------------------------------------------------------------------
 
-if has('nvim')
-	runtime! python_setup.vim
-endif
+" if has('nvim')
+" 	runtime! python_setup.vim
+" endif
 
 Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
 Plug 'SirVer/ultisnips'
@@ -239,9 +239,9 @@ let g:UltiSnipsSnippetsDir=plugDir.'/vim-snippets/UltiSnips'
 " ----------------------------------------------------------------------------
 
 Plug 'mileszs/ack.vim'
-Plug 'mbbill/undotree'
-Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
-Plug 'Xuyuanp/nerdtree-git-plugin' ", {'on': ['NERDTreeToggle','NERDTreeFind']}
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
+Plug 'scrooloose/nerdtree', {'on': ['NERDTreeToggle','NERDTreeFind']}
+Plug 'Xuyuanp/nerdtree-git-plugin' ", {'on': ['<Plug>NERDTreeToggle','<Plug>NERDTreeFind']}
 
 " Undotree setup
 let g:undotree_WindowLayout='botright'
