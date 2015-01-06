@@ -39,8 +39,7 @@ set modelines=5
 set backspace=indent,eol,start " Makes backspace behave like most editors
 
 if has('nvim')        " activate clipboard for neovim
-	set clipboard=unnamed
-	" set unnamedclip
+	set clipboard+=unnamedplus
 endif
 
 set hlsearch   " Highlight search
@@ -315,9 +314,9 @@ Plug 'klen/python-mode', { 'for': ['python'] }
 
 " Html / CSS / Js
 Plug 'othree/html5.vim', { 'for': ['html', 'hbs'] }
-Plug 'skammer/vim-css-color', {'for': ['less', 'scss', 'sass']}
-Plug 'cakebaker/scss-syntax.vim'
-Plug 'PProvost/vim-markdown-jekyll', {'for': ['html', 'hbs']}
+" Plug 'skammer/vim-css-color', {'for': ['less', 'scss', 'sass']}
+Plug 'cakebaker/scss-syntax.vim', {'for': ['less', 'scss', 'sass']}
+" Plug 'PProvost/vim-markdown-jekyll', {'for': ['html', 'hbs']}
 
 " Pandoc setup
 let g:pandoc_use_conceal = 1
@@ -344,7 +343,7 @@ map <leader>gm :call LivedownPreview()<CR>
 " Colors Themes
 " ----------------------------------------------------------------------------
 
-Plug 'daylerees/colour-schemes'
+" Plug 'daylerees/colour-schemes'
 Plug 'morhetz/gruvbox'
 Plug 'effkay/argonaut.vim'
 
