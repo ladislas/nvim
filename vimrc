@@ -314,8 +314,9 @@ Plug 'klen/python-mode', { 'for': ['python'] }
 
 " Html / CSS / Js
 Plug 'othree/html5.vim', { 'for': ['html', 'hbs'] }
-" Plug 'skammer/vim-css-color', {'for': ['less', 'scss', 'sass']}
 Plug 'cakebaker/scss-syntax.vim', {'for': ['less', 'scss', 'sass']}
+Plug 'elzr/vim-json', {'for': 'json'}
+" Plug 'skammer/vim-css-color', {'for': ['less', 'scss', 'sass']}
 " Plug 'PProvost/vim-markdown-jekyll', {'for': ['html', 'hbs']}
 
 " Pandoc setup
