@@ -312,7 +312,7 @@ Plug 'shime/vim-livedown', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 " Python
 Plug 'klen/python-mode', { 'for': ['python'] }
 
-" Html / CSS / Js
+" Web
 Plug 'othree/html5.vim', { 'for': ['html', 'hbs'] }
 Plug 'cakebaker/scss-syntax.vim', {'for': ['less', 'scss', 'sass']}
 Plug 'elzr/vim-json', {'for': 'json'}
@@ -324,8 +324,7 @@ let g:pandoc_use_conceal = 1
 let g:pandoc_syntax_dont_use_conceal_for_rules = ['block', 'codeblock_start', 'codeblock_delim']
 let g:pandoc_syntax_user_cchars = {'li': '*'}
 let g:pantondoc_use_pandoc_markdown = 1
-let g:instant_markdown_slow = 1
-let g:instant_markdown_autostart = 0
+let g:pandoc#formatting#equalprg = "pandoc -t markdown --no-wrap --atx-headers"
 
 " Livedown setup
 let g:livedown_autorun = 0
