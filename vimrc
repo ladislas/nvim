@@ -456,6 +456,9 @@ vmap <leader>s :sort<cr>
 " Quick save
 nnoremap <leader>w :w<cr>
 
+" Add newline with return key
+nmap <CR> o<Esc>
+
 " Remap arrow keys
 nnoremap <down> :tabprev<CR>
 nnoremap <left> :bprev<CR>
