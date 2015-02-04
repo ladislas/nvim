@@ -62,6 +62,7 @@ set number       " Show line numbers
 set showcmd      " Show last command
 set lazyredraw   " Don't redraw when not needed
 set laststatus=2 " Always show the status line
+set scrolloff=10  " Keep cursor from reaching end of screen
 set noshowmode   " Hide the mode on last line as we use Vim Airline
 
 set cursorline " Highlight current line
