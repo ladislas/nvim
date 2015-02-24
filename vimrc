@@ -314,9 +314,10 @@ Plug 'shime/vim-livedown', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 Plug 'klen/python-mode', { 'for': ['python'] }
 
 " Web
-Plug 'othree/html5.vim', { 'for': ['html', 'hbs'] }
+Plug 'othree/html5.vim', { 'for': ['html', 'html.handlebars'] }
 Plug 'cakebaker/scss-syntax.vim', {'for': ['less', 'scss', 'sass']}
 Plug 'elzr/vim-json', {'for': 'json'}
+Plug 'mustache/vim-mustache-handlebars', {'for': 'html.handlebars'}
 " Plug 'skammer/vim-css-color', {'for': ['less', 'scss', 'sass']}
 " Plug 'PProvost/vim-markdown-jekyll', {'for': ['html', 'hbs']}
 
