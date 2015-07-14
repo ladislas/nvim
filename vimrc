@@ -60,26 +60,28 @@ endif
 
 set number       " Show line numbers
 set showcmd      " Show last command
-set lazyredraw   " Don't redraw when not needed
+" set lazyredraw   " Don't redraw when not needed
 set laststatus=2 " Always show the status line
 set scrolloff=10  " Keep cursor from reaching end of screen
 set noshowmode   " Hide the mode on last line as we use Vim Airline
 
-set cursorline " Highlight current line
-autocmd WinLeave * setlocal nocursorline
-autocmd WinEnter * setlocal cursorline
+" set cursorline " Highlight current line
+" autocmd WinLeave * setlocal nocursorline
+" autocmd WinEnter * setlocal cursorline
 
 set autoindent " Auto indent line on CR
 set smarttab   " Add tab and backspace like you'd like to
 set shiftround " Always indent with a multiple of shiftwidth
 
-set tabstop=4 " Tabs are 4 spaces long and are tabs, not spaces...
+set tabstop=4 " Default indentation is 4 spaces long and uses tabs, not spaces...
 set softtabstop=4
 set shiftwidth=4
 set noexpandtab
 
 set list " Show invisible characters
-set listchars=tab:│\ ,trail:•,extends:❯,precedes:❮
+"set listchars=tab:>-,trail:•,extends:❯>>,precedes:<<
+set listchars=tab:>-,trail:. ",eol:¶
+"set listchars=tab:»·,trail:·
 
 set linebreak " Show linebreaks
 let &showbreak='↪ '
@@ -178,7 +180,7 @@ nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mappin
 " ----------------------------------------------------------------------------
 
 Plug 'bufkill.vim'
-Plug 'mhinz/vim-startify'
+Plug 'mhinz/vim-startify', {'on': 'Startify'}
 Plug 'duff/vim-bufonly'
 
 " Vim Startify setup
