@@ -38,7 +38,7 @@ set modelines=5
 
 set backspace=indent,eol,start " Makes backspace behave like most editors
 
-if has('nvim')        " activate clipboard for neovim
+if has('nvim') " Activate clipboard for neovim
 	set clipboard+=unnamedplus
 endif
 
@@ -60,14 +60,14 @@ endif
 
 set number       " Show line numbers
 set showcmd      " Show last command
-" set lazyredraw   " Don't redraw when not needed
+set lazyredraw   " Don't redraw when not needed
 set laststatus=2 " Always show the status line
-set scrolloff=10  " Keep cursor from reaching end of screen
+set scrolloff=10 " Keep cursor from reaching end of screen
 set noshowmode   " Hide the mode on last line as we use Vim Airline
 
-" set cursorline " Highlight current line
-" autocmd WinLeave * setlocal nocursorline
-" autocmd WinEnter * setlocal cursorline
+set cursorline " Highlight current line
+autocmd WinLeave * setlocal nocursorline
+autocmd WinEnter * setlocal cursorline
 
 set autoindent " Auto indent line on CR
 set smarttab   " Add tab and backspace like you'd like to
@@ -79,8 +79,8 @@ set shiftwidth=4
 set noexpandtab
 
 set list " Show invisible characters
-"set listchars=tab:>-,trail:•,extends:❯>>,precedes:<<
-set listchars=tab:>-,trail:. ",eol:¶
+"set listchars=tab:>-,trail:•,extends:❯,precedes:
+set listchars=tab:\|-,trail:• ",eol:¶
 "set listchars=tab:»·,trail:·
 
 set linebreak " Show linebreaks
