@@ -95,7 +95,6 @@ set splitright " Split windows right
 
 set noerrorbells " Turn of error notifications
 set novisualbell
-set t_vb=
 
 set nofoldenable " Disable folding
 set background=dark
@@ -135,11 +134,11 @@ endif
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/unite.vim'
+Plug 'Shougo/neoyank.vim'
 
 " Unite setup
 let g:unite_data_directory=g:vimDir.'/.cache/unite'
 let g:unite_enable_start_insert=1
-let g:unite_source_history_yank_enable=1
 let g:unite_source_rec_max_cache_files=5000
 let g:unite_prompt='» '
 
@@ -165,7 +164,7 @@ nnoremap [unite] <nop>
 
 " Set useful Unite mappings
 nnoremap <silent> [unite]t :<C-u>Unite -auto-resize -buffer-name=files file<cr>
-nnoremap <silent> [unite]y :<C-u>Unite -auto-resize -buffer-name=yanks history/yank<cr>
+nnoremap <silent> [unite]y :<C-u>Unite history/yank -auto-resize -buffer-name=yanks<cr>
 nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
 nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
 nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
@@ -212,7 +211,7 @@ au FileType c,cpp,objc,objcpp,python,javascript call rainbow#load()
 " Autocompletion & Snippets Plugins
 " ----------------------------------------------------------------------------
 
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
 Plug 'SirVer/ultisnips'
 Plug 'ladislas/vim-snippets'
 
