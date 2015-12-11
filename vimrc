@@ -2,8 +2,6 @@
 " Lean 'n' Clean Neovim Config
 " ----------------------------------------------------------------------------
 
-set nocompatible " Be IMproved
-
 call plug#begin()
 
 " ----------------------------------------------------------------------------
@@ -38,9 +36,7 @@ set modelines=5
 
 set backspace=indent,eol,start " Makes backspace behave like most editors
 
-if has('nvim') " Activate clipboard for neovim
-	set clipboard+=unnamedplus
-endif
+set clipboard+=unnamedplus
 
 set hlsearch   " Highlight search
 set incsearch  " Highlight pattern matches as you type
@@ -80,7 +76,7 @@ set noexpandtab
 
 set list " Show invisible characters
 "set listchars=tab:>-,trail:•,extends:❯,precedes:
-set listchars=tab:\|-,trail:• ",eol:¶
+set listchars=tab:\|\ ,trail:• ",eol:¶
 "set listchars=tab:»·,trail:·
 
 set linebreak " Show linebreaks
@@ -215,10 +211,6 @@ au FileType c,cpp,objc,objcpp,python,javascript call rainbow#load()
 " ----------------------------------------------------------------------------
 " Autocompletion & Snippets Plugins
 " ----------------------------------------------------------------------------
-
-" if has('nvim')
-" 	runtime! python_setup.vim
-" endif
 
 Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
 Plug 'SirVer/ultisnips'
