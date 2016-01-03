@@ -292,10 +292,14 @@ vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
 " Language Specific Plugins
 " ----------------------------------------------------------------------------
 
+" Vim Polyglote
+Plug 'sheerun/vim-polyglot'
+let g:polyglot_disabled = ['markdown']
+
 " C++
-Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
+" Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
 Plug 'derekwyatt/vim-protodef', { 'for': ['cpp', 'c', 'h'] }
-Plug 'derekwyatt/vim-fswitch', { 'for': ['cpp', 'c'] }
+Plug 'derekwyatt/vim-fswitch', { 'for': ['cpp', 'c', 'h'] }
 
 " Markdown
 autocmd BufRead,BufNewFile *.md,*.markdown setlocal filetype=pandoc.markdown " Automatically set filetype for Markdown files"
@@ -307,10 +311,10 @@ Plug 'shime/vim-livedown', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 Plug 'klen/python-mode', { 'for': ['python'] }
 
 " Web
-Plug 'othree/html5.vim', { 'for': ['html', 'html.handlebars'] }
+" Plug 'othree/html5.vim', { 'for': ['html', 'html.handlebars'] }
 Plug 'cakebaker/scss-syntax.vim', {'for': ['less', 'scss', 'sass']}
-Plug 'elzr/vim-json', {'for': 'json'}
-Plug 'mustache/vim-mustache-handlebars', {'for': 'html.handlebars'}
+" Plug 'elzr/vim-json', {'for': 'json'}
+" Plug 'mustache/vim-mustache-handlebars', {'for': 'html.handlebars'}
 " Plug 'skammer/vim-css-color', {'for': ['less', 'scss', 'sass']}
 " Plug 'PProvost/vim-markdown-jekyll', {'for': ['html', 'hbs']}
 
