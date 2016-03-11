@@ -1,1 +1,1 @@
-./vimrc
+/Users/ladislas/.nvim/vimrc
