@@ -425,16 +425,17 @@ endfunction
 " Basic Backup
 " ----------------------------------------------------------------------------
 
-if exists('+undofile') " Nice persistent undos
-	set undofile
-	execute "set undodir=".g:vimDir."/.cache/undo"
-endif
+" Nice persistent undos
+let &undodir=g:vimDir."/.cache/undo//"
+set undofile
 
-set backup " Keep backups
-execute "set backupdir=".g:vimDir."/.cache/backup"
+" Keep backups
+let &backupdir=g:vimDir."/.cache/backup//"
+set backup
 
-set swapfile " Keep swap files, can save your life"
-execute "set directory=".g:vimDir."/.cache/swap"
+" Keep swap files, can save your life"
+let &directory=g:vimDir."/.cache/swap//"
+set swapfile
 
 call EnsureExists(g:vimDir.'/.cache')
 call EnsureExists(&undodir)
