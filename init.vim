@@ -326,7 +326,7 @@ let g:pandoc_use_conceal = 1
 let g:pandoc_syntax_dont_use_conceal_for_rules = ['block', 'codeblock_start', 'codeblock_delim']
 let g:pandoc_syntax_user_cchars = {'li': '*'}
 let g:pantondoc_use_pandoc_markdown = 1
-let g:pandoc#formatting#equalprg = "pandoc -t markdown --no-wrap --atx-headers"
+let g:pandoc#formatting#equalprg = "pandoc -t markdown --wrap=none --atx-headers"
 
 " Livedown setup
 let g:livedown_autorun = 0
