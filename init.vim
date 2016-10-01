@@ -306,8 +306,8 @@ Plug 'keith/swift.vim'
 
 " Markdown
 autocmd BufRead,BufNewFile *.md,*.markdown setlocal filetype=pandoc.markdown " Automatically set filetype for Markdown files"
+Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
-Plug 'vim-pandoc/vim-pantondoc', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 Plug 'shime/vim-livedown', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 
 " Python
@@ -323,15 +323,15 @@ Plug 'cakebaker/scss-syntax.vim', {'for': ['less', 'scss', 'sass']}
 
 " Pandoc setup
 let g:pandoc_use_conceal = 1
-let g:pandoc_syntax_dont_use_conceal_for_rules = ['block', 'codeblock_start', 'codeblock_delim']
-let g:pandoc_syntax_user_cchars = {'li': '*'}
-let g:pantondoc_use_pandoc_markdown = 1
+let g:pandoc#syntax#conceal#blacklist = ['block', 'codeblock_start', 'codeblock_delim']
+let g:pandoc#syntax#conceal#cchar_overrides = {'li': '*'}
 let g:pandoc#formatting#equalprg = "pandoc -t markdown --wrap=none --atx-headers"
 
 " Livedown setup
 let g:livedown_autorun = 0
 let g:livedown_open = 1
 let g:livedown_port = 1337
+let g:livedown_browser = "chrome"
 map <leader>gm :call LivedownPreview()<CR>
 
 " ----------------------------------------------------------------------------
