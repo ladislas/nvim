@@ -234,8 +234,8 @@ let g:UltiSnipsSnippetsDir=plugDir.'/vim-snippets/UltiSnips'
 
 Plug 'mileszs/ack.vim'
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
-Plug 'scrooloose/nerdtree', {'on': ['NERDTreeToggle','NERDTreeFind']}
-Plug 'Xuyuanp/nerdtree-git-plugin' ", {'on': ['<Plug>NERDTreeToggle','<Plug>NERDTreeFind']}
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " Undotree setup
 let g:undotree_WindowLayout='botright'
