@@ -214,6 +214,9 @@ au FileType c,cpp,objc,objcpp,python,javascript call rainbow#load()
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
 Plug 'SirVer/ultisnips'
 Plug 'ladislas/vim-snippets'
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" let g:deoplete#enable_at_startup = 1
+" Plug 'mitsuse/autocomplete-swift'
 
 " YouCompleteMe setup
 let g:ycm_autoclose_preview_window_after_completion = 1
@@ -357,7 +360,7 @@ endif
 
 
 " ----------------------------------------------------------------------------
-" Source Cotrol Management Plugins
+" Source Control Management Plugins
 " ----------------------------------------------------------------------------
 
 Plug 'airblade/vim-gitgutter'
@@ -375,6 +378,7 @@ nnoremap <silent> <leader>gl :Glog<CR>
 nnoremap <silent> <leader>gp :Git push<CR>
 nnoremap <silent> <leader>gw :Gwrite<CR>
 nnoremap <silent> <leader>gr :Gremove<CR>
+
 autocmd FileType gitcommit nmap <buffer> U :Git checkout -- <C-r><C-g><CR>
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
