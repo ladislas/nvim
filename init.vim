@@ -189,7 +189,8 @@ nnoremap <F1> :Startify<cr>
 " UI Plugins
 " ----------------------------------------------------------------------------
 
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'zhaocai/GoldenView.Vim', {'on': '<Plug>ToggleGoldenViewAutoResize'}
 Plug 'oblitum/rainbow'
 
