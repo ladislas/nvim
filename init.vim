@@ -174,7 +174,7 @@ nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mappin
 " Core Plugins
 " ----------------------------------------------------------------------------
 
-Plug 'bufkill.vim'
+Plug 'qpkorr/vim-bufkill'
 Plug 'mhinz/vim-startify', {'on': 'Startify'}
 Plug 'duff/vim-bufonly'
 
