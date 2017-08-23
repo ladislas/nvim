@@ -254,7 +254,7 @@ let NERDTreeShowLineNumbers=1
 let NERDTreeChDirMode=2
 let NERDTreeShowBookmarks=0
 let NERDTreeIgnore=['\.hg', '.DS_Store']
-let NERDTreeBookmarksFile=expand(g:vimDir.'/.cache/NERDTree/NERDTreeBookmarks')
+let g:NERDTreeBookmarksFile = $HOME."/.config/nvim/.cache/NERDTree/NERDTreeShowBookmarks"
 nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :NERDTreeFind<CR>
 
