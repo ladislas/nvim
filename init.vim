@@ -55,6 +55,7 @@ endif
 " ----------------------------------------------------------------------------
 
 set number       " Show line numbers
+set relativenumber
 set showcmd      " Show last command
 set lazyredraw   " Don't redraw when not needed
 set laststatus=2 " Always show the status line
@@ -276,6 +277,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 
 Plug 'godlygeek/tabular'
+Plug 'junegunn/vim-easy-align'
 
 " Tabularize setup
 nmap <Leader>a& :Tabularize /&<CR>
@@ -298,10 +300,10 @@ vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
 
 " Vim Polyglote
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled = ['markdown']
+let g:polyglot_disabled = ['markdown', 'c', 'cpp', 'h']
 
 " C++
-" Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
+Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
 Plug 'derekwyatt/vim-protodef', { 'for': ['cpp', 'c', 'h'] }
 Plug 'derekwyatt/vim-fswitch', { 'for': ['cpp', 'c', 'h'] }
 
