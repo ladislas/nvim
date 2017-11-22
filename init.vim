@@ -55,7 +55,6 @@ endif
 " ----------------------------------------------------------------------------
 
 set number       " Show line numbers
-set relativenumber
 set showcmd      " Show last command
 set lazyredraw   " Don't redraw when not needed
 set laststatus=2 " Always show the status line
@@ -99,33 +98,6 @@ set novisualbell
 
 set nofoldenable " Disable folding
 set background=dark
-
-" In case we run a GUI
-if has('gui_running')
-	set lines=999 columns=9999
-
-	set guioptions+=t
-	set guioptions-=T
-
-	if has('gui_macvim')
-		set gfn=Sauce\ Code\ Powerline\ Light:h12
-		set transparency=2
-	endif
-
-	if has('gui_gtk')
-		set gfn=Sauce\ Code\ Powerline\ Light:h12
-	endif
-else
-	if $COLORTERM == 'gnome-terminal'
-		set t_Co=256
-	endif
-
-	if $TERM_PROGRAM == 'iTerm.app'
-		" different cursors for insert vs normal mode
-		let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-		let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-	endif
-endif
 
 
 " ----------------------------------------------------------------------------
@@ -462,7 +434,6 @@ call EnsureExists(g:vimDir.'/.cache/NERDTree/NERDTreeBookmarks')
 " Call basic functions
 nmap <leader>f$ :call StripTrailingWhitespace()<CR>
 nmap <leader>fef :call PreserveCursorPosition("normal gg=G")<CR>
-vmap <leader>s :sort<cr>
 
 " Quick save
 nnoremap <leader>w :w<cr>
