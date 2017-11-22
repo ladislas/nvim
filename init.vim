@@ -189,15 +189,11 @@ au FileType c,cpp,objc,objcpp,python,javascript call rainbow#load()
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
 Plug 'SirVer/ultisnips'
 Plug 'ladislas/vim-snippets'
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" let g:deoplete#enable_at_startup = 1
-" Plug 'mitsuse/autocomplete-swift'
 
 " YouCompleteMe setup
 let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_filetype_blacklist={'unite': 1}
-let g:ycm_min_num_of_chars_for_completion = 1
-nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+let g:ycm_error_symbol = '>>'
+let g:ycm_warning_symbol = '!!'
 
 " UltiSnips setup
 let g:UltiSnipsExpandTrigger='<c-e>'
@@ -277,8 +273,6 @@ let g:polyglot_disabled = ['markdown', 'c', 'cpp', 'h']
 
 " C++
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
-Plug 'derekwyatt/vim-protodef', { 'for': ['cpp', 'c', 'h'] }
-Plug 'derekwyatt/vim-fswitch', { 'for': ['cpp', 'c', 'h'] }
 
 " Swift
 Plug 'keith/swift.vim'
@@ -288,17 +282,6 @@ autocmd BufRead,BufNewFile *.md,*.markdown setlocal filetype=pandoc.markdown " A
 Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 Plug 'shime/vim-livedown', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
-
-" Python
-Plug 'klen/python-mode', { 'for': ['python'] }
-
-" Web
-" Plug 'othree/html5.vim', { 'for': ['html', 'html.handlebars'] }
-Plug 'cakebaker/scss-syntax.vim', {'for': ['less', 'scss', 'sass']}
-" Plug 'elzr/vim-json', {'for': 'json'}
-" Plug 'mustache/vim-mustache-handlebars', {'for': 'html.handlebars'}
-" Plug 'skammer/vim-css-color', {'for': ['less', 'scss', 'sass']}
-" Plug 'PProvost/vim-markdown-jekyll', {'for': ['html', 'hbs']}
 
 " Pandoc setup
 let g:pandoc_use_conceal = 1
@@ -312,6 +295,7 @@ let g:livedown_open = 1
 let g:livedown_port = 1337
 let g:livedown_browser = "chrome"
 map <leader>gm :call LivedownPreview()<CR>
+
 
 " ----------------------------------------------------------------------------
 " Text Object Plugins
@@ -330,9 +314,6 @@ Plug 'effkay/argonaut.vim'
 
 " Gruvbox setup
 let g:gruvbox_bold = 0
-if !has("gui_running")
-	let g:gruvbox_italic = 0
-endif
 
 
 " ----------------------------------------------------------------------------
