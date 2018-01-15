@@ -284,10 +284,10 @@ Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc.markdown', 'm
 Plug 'shime/vim-livedown', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 
 " Pandoc setup
-let g:pandoc_use_conceal = 1
+let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#syntax#conceal#blacklist = ['block', 'codeblock_start', 'codeblock_delim']
 let g:pandoc#syntax#conceal#cchar_overrides = {'li': '*'}
-let g:pandoc#formatting#equalprg = "pandoc -t markdown --wrap=none --atx-headers"
+let g:pandoc#formatting#equalprg = "pandoc -t gfm --wrap=none"
 
 " Livedown setup
 let g:livedown_autorun = 0
