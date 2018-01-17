@@ -2,17 +2,56 @@
 " Lean 'n' Clean Neovim Config
 " ----------------------------------------------------------------------------
 
-" call plug#begin()
+call plug#begin()
 
 " ----------------------------------------------------------------------------
-" Basic Vim Configuration
+" MARK: - Global Variables
 " ----------------------------------------------------------------------------
+
+let nvimDir  = '$HOME/.config/nvim'
+let cacheDir = expand(nvimDir . '/.cache')
+
+
+" ----------------------------------------------------------------------------
+" MARK: - Basic Useful Functions
+" ----------------------------------------------------------------------------
+
+function! PreserveCursorPosition(command)
+	" preparation: save last search, and cursor position.
+	let _s=@/
+	let l = line(".")
+	let c = col(".")
+
+	" do the business:
+	execute a:command
+
+	" clean up: restore previous search history, and cursor position
+	let @/=_s
+	call cursor(l, c)
+endfunction
+
+function! StripTrailingWhitespace()
+	call PreserveCursorPosition("%s/\\s\\+$//e")
+endfunction
+
+function! CreateAndExpand(path)
+	if !isdirectory(expand(a:path))
+		call mkdir(expand(a:path), 'p')
+	endif
+
+	return expand(a:path)
+endfunction
+
+
+" ----------------------------------------------------------------------------
+" MARK: - Basic Vim Configuration
+" ----------------------------------------------------------------------------
+
+let mapleader = "," " Set mapleader
+let g:mapleader = ","
 
 set mouse=a " Allow mouse usage
 set mousehide
-
-set history=1000 " Remember everything
-set undolevels=1000
 
 set encoding=utf-8 " Set right encoding and formats
 set fileformat=unix
@@ -38,14 +77,34 @@ set smartcase  " Override 'ignorecase' when pattern has upper case character
 
 
 " ----------------------------------------------------------------------------
-" Basic UI Configuration
+" MARK: - Backup Configuration
+" ----------------------------------------------------------------------------
+
+set history=1000 " Remember everything
+set undolevels=1000
+
+" Nice persistent undos
+let &undodir=CreateAndExpand(cacheDir . '/undo')
+set undofile
+
+" Keep backups
+let &backupdir=CreateAndExpand(cacheDir . '/backup')
+set backup
+
+" Keep swap files, can save your life"
+let &directory=CreateAndExpand(cacheDir . '/swap')
+set swapfile
+
+
+" ----------------------------------------------------------------------------
+" MARK: - Basic UI Configuration
 " ----------------------------------------------------------------------------
 
 set number       " Show line numbers
 set showcmd      " Show last command
 set lazyredraw   " Don't redraw when not needed
-set laststatus=2 " Always show the status line
 set scrolloff=10 " Keep cursor from reaching end of screen
+set laststatus=2 " Always show the status line
 set noshowmode   " Hide the mode on last line as we use Vim Airline
 
 set cursorline " Highlight current line
@@ -62,6 +121,7 @@ set shiftwidth=4
 set noexpandtab
 
 set list " Show invisible characters
+set listchars=tab:\|\ ,trail:•
 
 set linebreak " Show linebreaks
 let &showbreak='↪ '
@@ -85,17 +145,112 @@ set background=dark
 
 
 " ----------------------------------------------------------------------------
-" Navigation Plugins
+" MARK: - Colors Themes
 " ----------------------------------------------------------------------------
 
-let g:netrw_winsize = -28             " absolute width of netrw window
-let g:netrw_liststyle = 3             " tree-view
-let g:netrw_sort_sequence = '[\/]$,*' " sort is affecting only: directories on the top, files below
-let g:netrw_browse_split = 3          " open file in a new tab
+Plug 'morhetz/gruvbox'
+
+" Gruvbox setup
+let g:gruvbox_bold = 0
 
 
 " ----------------------------------------------------------------------------
-" Mappings
+" MARK: - UI Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'vim-airline/vim-airline'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'zhaocai/GoldenView.Vim', {'on': '<Plug>ToggleGoldenViewAutoResize'}
+
+" Vim Airline setup
+let g:airline_powerline_fonts = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#whitespace#mixed_indent_algo = 2
+
+" GoldenView setup
+let g:goldenview__enable_default_mapping=0
+nmap <F4> <Plug>ToggleGoldenViewAutoResize
+
+
+" ----------------------------------------------------------------------------
+" MARK: - Buffer Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'duff/vim-bufonly'
+Plug 'qpkorr/vim-bufkill'
+
+
+" ----------------------------------------------------------------------------
+" MARK: - Startup Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'mhinz/vim-startify', {'on': 'Startify'}
+
+" Vim Startify setup
+let g:startify_session_dir = CreateAndExpand(cacheDir . '/sessions')
+let g:startify_change_to_vcs_root = 1
+let g:startify_show_sessions = 1
+nnoremap <F1> :Startify<cr>
+
+
+" ----------------------------------------------------------------------------
+" MARK: - Editing Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'tpope/vim-commentary'
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
+
+" Undotree setup
+nnoremap <silent> <F5> :UndotreeToggle<CR>
+
+
+" ----------------------------------------------------------------------------
+" MARK: - Navigation Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" NERDTree setup
+let NERDTreeShowHidden=0
+let NERDTreeQuitOnOpen=0
+let g:NERDTreeUseSimpleIndicator=1
+let NERDTreeShowLineNumbers=1
+let NERDTreeChDirMode=2
+let NERDTreeShowBookmarks=0
+let NERDTreeIgnore=['\.hg', '.DS_Store']
+let g:NERDTreeBookmarksFile = CreateAndExpand(cacheDir . '/NERDTree/NERDTreeShowBookmarks')
+
+nnoremap <F2> :NERDTreeToggle<CR>
+nnoremap <F3> :NERDTreeFind<CR>
+
+
+" ----------------------------------------------------------------------------
+" Source Control Management Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+
+" Gitgutter setup
+let g:gitgutter_realtime=0
+
+" Fugitive setup
+nnoremap <silent> <leader>gs :Gstatus<CR>
+nnoremap <silent> <leader>gd :Gdiff<CR>
+nnoremap <silent> <leader>gc :Gcommit<CR>
+nnoremap <silent> <leader>gb :Gblame<CR>
+nnoremap <silent> <leader>gl :Glog<CR>
+nnoremap <silent> <leader>gp :Git push<CR>
+nnoremap <silent> <leader>gw :Gwrite<CR>
+nnoremap <silent> <leader>gr :Gremove<CR>
+
+autocmd FileType gitcommit nmap <buffer> U :Git checkout -- <C-r><C-g><CR>
+autocmd BufReadPost fugitive://* set bufhidden=delete
+
+
+" ----------------------------------------------------------------------------
+" MARK: - Mappings
 " ----------------------------------------------------------------------------
 
 " Quick save
@@ -153,7 +308,7 @@ vnoremap < <gv
 vnoremap > >gv
 
 " Toggles smart indenting while pasting, A.K.A lifesaver
-set pastetoggle=<F3>
+set pastetoggle=<F6>
 
 " Reselect last paste
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
@@ -178,7 +333,14 @@ map <leader>tc :tabclose<CR>
 nmap <silent> <leader>sp :set spell!<CR>
 
 
-" call plug#end()
+" ----------------------------------------------------------------------------
+" End of Configuration
+" ----------------------------------------------------------------------------
+
+call plug#end()
+
+" Set color scheme
+colorscheme gruvbox
 
 " Finish tuning Vim
 filetype plugin indent on
