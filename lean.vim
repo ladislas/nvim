@@ -221,16 +221,14 @@ nnoremap <silent> <F5> :UndotreeToggle<CR>
 
 
 " ----------------------------------------------------------------------------
-" Denite/Unite, Autocompletion & Snippets Plugins
+" Autocompletion & Snippets Plugins
 " ----------------------------------------------------------------------------
 
-if has('nvim')
-	Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-	Plug 'Shougo/deoplete.nvim'
-	Plug 'roxma/nvim-yarp'
-	Plug 'roxma/vim-hug-neovim-rpc'
-endif
+Plug 'autozimu/LanguageClient-neovim', {
+			\ 'branch': 'next',
+			\ 'do': 'bash install.sh',
+			\ }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Deoplete setup
 let g:deoplete#enable_at_startup = 1
@@ -249,6 +247,13 @@ function! s:check_back_space() abort
 	let col = col('.') - 1
 	return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
+
+" ----------------------------------------------------------------------------
+" Denite Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'Shougo/denite.nvim'
+Plug 'Shougo/neoyank.vim'
 
 
 " ----------------------------------------------------------------------------
@@ -297,12 +302,49 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 
 
 " ----------------------------------------------------------------------------
+" MARK: - Stop Loading Plugins
+" ----------------------------------------------------------------------------
+
+call plug#end()
+
+
+" ----------------------------------------------------------------------------
+" Denite Setup
+" ----------------------------------------------------------------------------
+
+call denite#custom#option('default', 'prompt', '>')
+call denite#custom#map(
+			\ 'insert',
+			\ '<C-j>',
+			\ '<denite:move_to_next_line>',
+			\ 'noremap'
+			\)
+call denite#custom#map(
+			\ 'insert',
+			\ '<C-k>',
+			\ '<denite:move_to_previous_line>',
+			\ 'noremap'
+			\)
+
+
+" Set denite leader
+nmap <space> [denite]
+nnoremap [denite] <nop>
+
+" Set useful denite mappings
+nnoremap <silent> [denite]y :<C-u>Denite neoyank -direction=dynamictop -buffer-name=yanks<cr>
+nnoremap <silent> [denite]t :<C-u>Denite -direction=dynamictop -buffer-name=files file<cr>
+nnoremap <silent> [denite]l :<C-u>Denite -direction=dynamictop -buffer-name=line line<cr>
+nnoremap <silent> [denite]b :<C-u>Denite -direction=dynamictop -buffer-name=buffers buffer<cr>
+
+
+" ----------------------------------------------------------------------------
 " MARK: - Mappings
 " ----------------------------------------------------------------------------
 
 " Call basic functions
 nmap <leader>f$ :call StripTrailingWhitespace()<CR>
-nmap <leader>fef :call PreserveCursorPosition('normal gg=G')<CR> " reformat file
+nmap <leader>fef :call PreserveCursorPosition('normal gg=G')<CR>
 
 " Quick save
 nnoremap <leader>w :w<cr>
@@ -385,10 +427,8 @@ nmap <silent> <leader>sp :set spell!<CR>
 
 
 " ----------------------------------------------------------------------------
-" End of Configuration
+" MARK: - End of Configuration
 " ----------------------------------------------------------------------------
-
-call plug#end()
 
 " Set color scheme
 colorscheme gruvbox
