@@ -5,22 +5,69 @@
 call plug#begin()
 
 " ----------------------------------------------------------------------------
-" Basic Vim Configuration
+" MARK: - Global Variables
 " ----------------------------------------------------------------------------
 
-let g:vimrcPath = $MYVIMRC
-let g:vimPath = system('realpath '.g:vimrcPath)
-let g:vimDir = fnamemodify(g:vimPath, ':h')
-let g:plugDir = g:vimDir.'/plugged'
+let nvimDir  = '$HOME/.config/nvim'
+let cacheDir = expand(nvimDir . '/.cache')
+
+
+" ----------------------------------------------------------------------------
+" MARK: - Basic Useful Functions
+" ----------------------------------------------------------------------------
+
+function! PreserveCursorPosition(command)
+	" preparation: save last search, and cursor position.
+	let _s=@/
+	let l = line(".")
+	let c = col(".")
+
+	" do the business:
+	execute a:command
+
+	" clean up: restore previous search history, and cursor position
+	let @/=_s
+	call cursor(l, c)
+endfunction
+
+function! StripTrailingWhitespace()
+	call PreserveCursorPosition("%s/\\s\\+$//e")
+endfunction
+
+function! CreateAndExpand(path)
+	if !isdirectory(expand(a:path))
+		call mkdir(expand(a:path), 'p')
+	endif
+
+	return expand(a:path)
+endfunction
+
+function! CloseWindowOrKillBuffer()
+	let number_of_windows_to_this_buffer = len(filter(range(1, winnr('$')), "winbufnr(v:val) == bufnr('%')"))
+
+	" never bdelete a nerd tree
+	if matchstr(expand("%"), 'NERD') == 'NERD'
+		wincmd c
+		return
+	endif
+
+	if number_of_windows_to_this_buffer > 1
+		wincmd c
+	else
+		bdelete
+	endif
+endfunction
+
+
+" ----------------------------------------------------------------------------
+" MARK: - Basic Vim Configuration
+" ----------------------------------------------------------------------------
 
 let mapleader = "," " Set mapleader
 let g:mapleader = ","
 
 set mouse=a " Allow mouse usage
 set mousehide
-
-set history=1000 " Remember everything
-set undolevels=1000
 
 set encoding=utf-8 " Set right encoding and formats
 set fileformat=unix
@@ -29,6 +76,7 @@ set nrformats-=octal
 set spelllang=en_us,fr " Spell check english and french
 
 set hidden " Deal nicely with buffers and switch without saving
+set autowrite
 set autoread
 
 set modeline " Allow modeline for per file formating using
@@ -43,22 +91,36 @@ set incsearch  " Highlight pattern matches as you type
 set ignorecase " Ignore case when using a search pattern
 set smartcase  " Override 'ignorecase' when pattern has upper case character
 
-" Set grep tool
-if executable('ack')
-	set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
-	set grepformat=%f:%l:%c:%m
-endif
+
+" ----------------------------------------------------------------------------
+" MARK: - Backup Configuration
+" ----------------------------------------------------------------------------
+
+set history=1000 " Remember everything
+set undolevels=1000
+
+" Nice persistent undos
+let &undodir=CreateAndExpand(cacheDir . '/undo')
+set undofile
+
+" Keep backups
+let &backupdir=CreateAndExpand(cacheDir . '/backup')
+set backup
+
+" Keep swap files, can save your life"
+let &directory=CreateAndExpand(cacheDir . '/swap')
+set swapfile
 
 
 " ----------------------------------------------------------------------------
-" Basic UI Configuration
+" MARK: - Basic UI Configuration
 " ----------------------------------------------------------------------------
 
 set number       " Show line numbers
 set showcmd      " Show last command
 set lazyredraw   " Don't redraw when not needed
-set laststatus=2 " Always show the status line
 set scrolloff=10 " Keep cursor from reaching end of screen
+set laststatus=2 " Always show the status line
 set noshowmode   " Hide the mode on last line as we use Vim Airline
 
 set cursorline " Highlight current line
@@ -75,9 +137,7 @@ set shiftwidth=4
 set noexpandtab
 
 set list " Show invisible characters
-"set listchars=tab:>-,trail:•,extends:❯,precedes:
-set listchars=tab:\|\ ,trail:• ",eol:¶
-"set listchars=tab:»·,trail:·
+set listchars=tab:\|\ ,trail:•
 
 set linebreak " Show linebreaks
 let &showbreak='↪ '
@@ -101,120 +161,107 @@ set background=dark
 
 
 " ----------------------------------------------------------------------------
-" Unite Plugins
+" MARK: - Colors Themes
 " ----------------------------------------------------------------------------
 
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-Plug 'Shougo/neomru.vim'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/neoyank.vim'
+Plug 'morhetz/gruvbox'
 
-" Unite setup
-let g:unite_data_directory=g:vimDir.'/.cache/unite'
-let g:unite_enable_start_insert=1
-let g:unite_source_rec_max_cache_files=5000
-let g:unite_prompt='» '
-
-if executable('ack')
-	let g:unite_source_grep_command='ack'
-	let g:unite_source_grep_default_opts='--no-heading --no-color -a -C4'
-	let g:unite_source_grep_recursive_opt=''
-endif
-
-function! s:unite_settings()
-	imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-	imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-	nmap <buffer> Q <plug>(unite_exit)
-	nmap <buffer> <esc> <plug>(unite_exit)
-	imap <buffer> <esc> <plug>(unite_exit)
-endfunction
-
-autocmd FileType unite call s:unite_settings()
-
-" Set Unite leader
-nmap <space> [unite]
-nnoremap [unite] <nop>
-
-" Set useful Unite mappings
-nnoremap <silent> [unite]t :<C-u>Unite -auto-resize -buffer-name=files file<cr>
-nnoremap <silent> [unite]y :<C-u>Unite history/yank -auto-resize -buffer-name=yanks<cr>
-nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
-nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
-nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
+" Gruvbox setup
+let g:gruvbox_bold = 0
 
 
 " ----------------------------------------------------------------------------
-" Core Plugins
-" ----------------------------------------------------------------------------
-
-Plug 'qpkorr/vim-bufkill'
-Plug 'mhinz/vim-startify', {'on': 'Startify'}
-Plug 'duff/vim-bufonly'
-
-" Vim Startify setup
-let g:startify_session_dir = g:vimDir.'/.cache/sessions'
-let g:startify_change_to_vcs_root = 1
-let g:startify_show_sessions = 1
-nnoremap <F1> :Startify<cr>
-
-
-" ----------------------------------------------------------------------------
-" UI Plugins
+" MARK: - UI Plugins
 " ----------------------------------------------------------------------------
 
 Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'zhaocai/GoldenView.Vim', {'on': '<Plug>ToggleGoldenViewAutoResize'}
-Plug 'oblitum/rainbow'
 
 " Vim Airline setup
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#left_sep=' '
-let g:airline#extensions#tabline#left_alt_sep='¦'
 let g:airline#extensions#whitespace#mixed_indent_algo = 2
 
 " GoldenView setup
 let g:goldenview__enable_default_mapping=0
 nmap <F4> <Plug>ToggleGoldenViewAutoResize
 
-" Rainbow setup
-au FileType c,cpp,objc,objcpp,python,javascript call rainbow#load()
+
+" ----------------------------------------------------------------------------
+" MARK: - Buffer Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'duff/vim-bufonly'
+Plug 'qpkorr/vim-bufkill'
+
+
+" ----------------------------------------------------------------------------
+" MARK: - Startup Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'mhinz/vim-startify', {'on': 'Startify'}
+
+" Vim Startify setup
+let g:startify_session_dir = CreateAndExpand(cacheDir . '/sessions')
+let g:startify_change_to_vcs_root = 1
+let g:startify_show_sessions = 1
+nnoremap <F1> :Startify<cr>
+
+
+" ----------------------------------------------------------------------------
+" MARK: - Editing Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'tpope/vim-commentary'
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
+
+" Undotree setup
+nnoremap <silent> <F5> :UndotreeToggle<CR>
 
 
 " ----------------------------------------------------------------------------
 " Autocompletion & Snippets Plugins
 " ----------------------------------------------------------------------------
 
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
-Plug 'SirVer/ultisnips'
-Plug 'ladislas/vim-snippets'
+Plug 'autozimu/LanguageClient-neovim', {
+			\ 'branch': 'next',
+			\ 'do': 'bash install.sh',
+			\ }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-" YouCompleteMe setup
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_error_symbol = '>>'
-let g:ycm_warning_symbol = '!!'
+" Deoplete setup
+let g:deoplete#enable_at_startup = 1
 
-" UltiSnips setup
-let g:UltiSnipsExpandTrigger='<c-e>'
-let g:UltiSnipsJumpForwardTrigger='<c-j>'
-let g:UltiSnipsJumpBackwardTrigger='<c-k>'
-let g:UltiSnipsSnippetsDir=plugDir.'/vim-snippets/UltiSnips'
+inoremap <silent><expr> <TAB>
+			\ pumvisible() ? "\<C-n>" :
+			\ <SID>check_back_space() ? "\<TAB>" :
+			\ deoplete#mappings#manual_complete()
+
+inoremap <silent><expr> <S-TAB>
+			\ pumvisible() ? "\<C-p>" :
+			\ <SID>check_back_space() ? "\<TAB>" :
+			\ deoplete#mappings#manual_complete()
+
+function! s:check_back_space() abort
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+" ----------------------------------------------------------------------------
+" Denite Plugins
+" ----------------------------------------------------------------------------
+
+Plug 'Shougo/denite.nvim'
+Plug 'Shougo/neoyank.vim'
 
 
 " ----------------------------------------------------------------------------
-" Navigation Plugins
+" MARK: - Navigation Plugins
 " ----------------------------------------------------------------------------
 
-Plug 'mileszs/ack.vim'
-Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-
-" Undotree setup
-let g:undotree_WindowLayout='botright'
-let g:undotree_SetFocusWhenToggle=1
-nnoremap <silent> <F5> :UndotreeToggle<CR>
 
 " NERDTree setup
 let NERDTreeShowHidden=0
@@ -224,96 +271,10 @@ let NERDTreeShowLineNumbers=1
 let NERDTreeChDirMode=2
 let NERDTreeShowBookmarks=0
 let NERDTreeIgnore=['\.hg', '.DS_Store']
-let g:NERDTreeBookmarksFile = $HOME."/.config/nvim/.cache/NERDTree/NERDTreeShowBookmarks"
+let g:NERDTreeBookmarksFile = CreateAndExpand(cacheDir . '/NERDTree/NERDTreeShowBookmarks')
+
 nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :NERDTreeFind<CR>
-
-
-" ----------------------------------------------------------------------------
-" Editing Plugins
-" ----------------------------------------------------------------------------
-
-Plug 'editorconfig/editorconfig-vim'
-Plug 'kristijanhusak/vim-multiple-cursors'
-Plug 'tomtom/tcomment_vim'
-
-Plug 'chrisbra/NrrwRgn'
-Plug 'tpope/vim-endwise'
-Plug 'jiangmiao/auto-pairs'
-
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-repeat'
-
-Plug 'godlygeek/tabular'
-Plug 'junegunn/vim-easy-align'
-
-" Tabularize setup
-nmap <Leader>a& :Tabularize /&<CR>
-vmap <Leader>a& :Tabularize /&<CR>
-nmap <Leader>a= :Tabularize /=<CR>
-vmap <Leader>a= :Tabularize /=<CR>
-nmap <Leader>a: :Tabularize /:<CR>
-vmap <Leader>a: :Tabularize /:<CR>
-nmap <Leader>a:: :Tabularize /:\zs<CR>
-vmap <Leader>a:: :Tabularize /:\zs<CR>
-nmap <Leader>a, :Tabularize /,<CR>
-vmap <Leader>a, :Tabularize /,<CR>
-nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-
-
-" ----------------------------------------------------------------------------
-" Language Specific Plugins
-" ----------------------------------------------------------------------------
-
-" Vim Polyglote
-Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled = ['markdown', 'c', 'cpp', 'h']
-
-" C++
-Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
-
-" Swift
-Plug 'keith/swift.vim'
-
-" Markdown
-autocmd BufRead,BufNewFile *.md,*.markdown setlocal filetype=pandoc.markdown " Automatically set filetype for Markdown files"
-Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
-Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
-Plug 'shime/vim-livedown', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
-
-" Pandoc setup
-let g:pandoc#syntax#conceal#use = 0
-let g:pandoc#syntax#conceal#blacklist = ['block', 'codeblock_start', 'codeblock_delim']
-let g:pandoc#syntax#conceal#cchar_overrides = {'li': '*'}
-let g:pandoc#formatting#equalprg = "pandoc -t gfm --wrap=none"
-
-" Livedown setup
-let g:livedown_autorun = 0
-let g:livedown_open = 1
-let g:livedown_port = 1337
-let g:livedown_browser = "chrome"
-map <leader>gm :call LivedownPreview()<CR>
-
-
-" ----------------------------------------------------------------------------
-" Text Object Plugins
-" ----------------------------------------------------------------------------
-
-" n/a
-
-
-" ----------------------------------------------------------------------------
-" Colors Themes
-" ----------------------------------------------------------------------------
-
-" Plug 'daylerees/colour-schemes'
-Plug 'morhetz/gruvbox'
-Plug 'effkay/argonaut.vim'
-
-" Gruvbox setup
-let g:gruvbox_bold = 0
 
 
 " ----------------------------------------------------------------------------
@@ -341,86 +302,64 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 
 
 " ----------------------------------------------------------------------------
-" Basic useful functions
+" MARK: - Stop Loading Plugins
 " ----------------------------------------------------------------------------
 
-function! PreserveCursorPosition(command)
-	" preparation: save last search, and cursor position.
-	let _s=@/
-	let l = line(".")
-	let c = col(".")
-
-	" do the business:
-	execute a:command
-
-	" clean up: restore previous search history, and cursor position
-	let @/=_s
-	call cursor(l, c)
-endfunction
-
-function! StripTrailingWhitespace()
-	call PreserveCursorPosition("%s/\\s\\+$//e")
-endfunction
-
-function! EnsureExists(path)
-	if !isdirectory(expand(a:path))
-		call mkdir(expand(a:path), 'p')
-	endif
-endfunction
-
-function! CloseWindowOrKillBuffer()
-	let number_of_windows_to_this_buffer = len(filter(range(1, winnr('$')), "winbufnr(v:val) == bufnr('%')"))
-
-	" never bdelete a nerd tree
-	if matchstr(expand("%"), 'NERD') == 'NERD'
-		wincmd c
-		return
-	endif
-
-	if number_of_windows_to_this_buffer > 1
-		wincmd c
-	else
-		bdelete
-	endif
-endfunction
+call plug#end()
 
 
 " ----------------------------------------------------------------------------
-" Basic Backup
+" Denite Setup
 " ----------------------------------------------------------------------------
 
-" Nice persistent undos
-let &undodir=g:vimDir."/.cache/undo//"
-set undofile
+call denite#custom#option('default', 'prompt', '>')
+call denite#custom#map(
+			\ 'insert',
+			\ '<C-j>',
+			\ '<denite:move_to_next_line>',
+			\ 'noremap'
+			\)
+call denite#custom#map(
+			\ 'insert',
+			\ '<C-k>',
+			\ '<denite:move_to_previous_line>',
+			\ 'noremap'
+			\)
 
-" Keep backups
-let &backupdir=g:vimDir."/.cache/backup//"
-set backup
 
-" Keep swap files, can save your life"
-let &directory=g:vimDir."/.cache/swap//"
-set swapfile
+" Set denite leader
+nmap <space> [denite]
+nnoremap [denite] <nop>
 
-call EnsureExists(g:vimDir.'/.cache')
-call EnsureExists(&undodir)
-call EnsureExists(&backupdir)
-call EnsureExists(&directory)
-call EnsureExists(g:vimDir.'/.cache/NERDTree/NERDTreeBookmarks')
+" Set useful denite mappings
+nnoremap <silent> [denite]y :<C-u>Denite neoyank -direction=dynamictop -buffer-name=yanks<cr>
+nnoremap <silent> [denite]t :<C-u>Denite -direction=dynamictop -buffer-name=files file<cr>
+nnoremap <silent> [denite]l :<C-u>Denite -direction=dynamictop -buffer-name=line line<cr>
+nnoremap <silent> [denite]b :<C-u>Denite -direction=dynamictop -buffer-name=buffers buffer<cr>
 
 
 " ----------------------------------------------------------------------------
-" Mappings
+" MARK: - Mappings
 " ----------------------------------------------------------------------------
 
 " Call basic functions
 nmap <leader>f$ :call StripTrailingWhitespace()<CR>
-nmap <leader>fef :call PreserveCursorPosition("normal gg=G")<CR>
+nmap <leader>fef :call PreserveCursorPosition('normal gg=G')<CR>
 
 " Quick save
 nnoremap <leader>w :w<cr>
 
 " Add newline with return key
 nmap <CR> o<Esc>
+
+" Quicker ESC
+inoremap jj <ESC>
+
+" Save with sudo
+cmap w!! %!sudo tee > /dev/null %
+
+" Sort text
+vmap <leader>ss :sort<cr>
 
 " Remap arrow keys
 nnoremap <down> :tabprev<CR>
@@ -429,23 +368,19 @@ nnoremap <right> :bnext<CR>
 nnoremap <up> :tabnext<CR>
 
 " Windows/Buffers motion keys
-nnoremap <leader>v <C-w>v<C-w>l
-nnoremap <leader>s <C-w>s
-nnoremap <leader>vsa :vert sba<cr>
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+nnoremap <leader>s <C-w>s
+nnoremap <leader>v <C-w>v<C-w>l
+nnoremap <leader>vsa :vert sba<cr>
 
 " Change cursor position in insert mode
 inoremap <C-h> <left>
-inoremap <C-l> <right>
-inoremap <C-k> <up>
 inoremap <C-j> <down>
-
-if mapcheck('<space>/') == ''
-	nnoremap <space>/ :vimgrep //gj **/*<left><left><left><left><left><left><left><left>
-endif
+inoremap <C-k> <up>
+inoremap <C-l> <right>
 
 " Sane regex search
 nnoremap / /\v
@@ -466,7 +401,7 @@ vnoremap < <gv
 vnoremap > >gv
 
 " Toggles smart indenting while pasting, A.K.A lifesaver
-set pastetoggle=<F3>
+set pastetoggle=<F6>
 
 " Reselect last paste
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
@@ -491,9 +426,11 @@ map <leader>tc :tabclose<CR>
 nmap <silent> <leader>sp :set spell!<CR>
 
 
-call plug#end()
+" ----------------------------------------------------------------------------
+" MARK: - End of Configuration
+" ----------------------------------------------------------------------------
 
-" Set colorscheme
+" Set color scheme
 colorscheme gruvbox
 
 " Finish tuning Vim
