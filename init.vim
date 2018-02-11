@@ -224,7 +224,34 @@ nnoremap <silent> <F5> :UndotreeToggle<CR>
 " MARK: - Language Plugins
 " ----------------------------------------------------------------------------
 
+" Vim Polyglote
+Plug 'sheerun/vim-polyglot'
+let g:polyglot_disabled = ['markdown', 'c', 'cpp', 'h']
+
+" C++
+Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
+
+" Swift
 Plug 'keith/swift.vim'
+
+" Markdown
+autocmd BufRead,BufNewFile *.md,*.markdown setlocal filetype=pandoc.markdown " Automatically set filetype for Markdown files"
+Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
+Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
+Plug 'shime/vim-livedown', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
+
+" Pandoc setup
+let g:pandoc#syntax#conceal#use = 0
+let g:pandoc#syntax#conceal#blacklist = ['block', 'codeblock_start', 'codeblock_delim']
+let g:pandoc#syntax#conceal#cchar_overrides = {'li': '*'}
+let g:pandoc#formatting#equalprg = "pandoc -t gfm --wrap=none"
+
+" Livedown setup
+let g:livedown_autorun = 0
+let g:livedown_open = 1
+let g:livedown_port = 1337
+let g:livedown_browser = "chrome"
+map <leader>gm :call LivedownPreview()<CR>
 
 
 " ----------------------------------------------------------------------------
