@@ -213,8 +213,25 @@ nnoremap <F1> :Startify<cr>
 " MARK: - Editing Plugins
 " ----------------------------------------------------------------------------
 
+Plug 'editorconfig/editorconfig-vim'
+Plug 'luochen1990/rainbow'
+
+Plug 'kristijanhusak/vim-multiple-cursors'
+Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/vim-easy-align'
+
+Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
+
+" Rainbow
+let g:rainbow_active = 1
+
+" EasyAlign
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " Undotree setup
 nnoremap <silent> <F5> :UndotreeToggle<CR>
@@ -223,6 +240,9 @@ nnoremap <silent> <F5> :UndotreeToggle<CR>
 " ----------------------------------------------------------------------------
 " MARK: - Language Plugins
 " ----------------------------------------------------------------------------
+
+" Misc
+Plug 'tpope/vim-endwise'
 
 " Vim Polyglote
 Plug 'sheerun/vim-polyglot'
@@ -262,7 +282,12 @@ Plug 'autozimu/LanguageClient-neovim', {
 			\ 'branch': 'next',
 			\ 'do': 'bash install.sh',
 			\ }
+
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer', 'for': ['cpp', 'c', 'h', 'ino']}
+Plug 'SirVer/ultisnips'
+Plug 'ladislas/vim-snippets'
 
 " Deoplete setup
 let g:deoplete#enable_at_startup = 1
@@ -281,6 +306,18 @@ function! s:check_back_space() abort
 	let col = col('.') - 1
 	return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
+
+" YouCompleteMe setup
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_error_symbol = '>>'
+let g:ycm_warning_symbol = '!!'
+
+" UltiSnips setup
+let g:UltiSnipsExpandTrigger='<c-e>'
+let g:UltiSnipsJumpForwardTrigger='<c-j>'
+let g:UltiSnipsJumpBackwardTrigger='<c-k>'
+" let g:UltiSnipsSnippetsDir=plugDir.'/vim-snippets/UltiSnips'
+
 
 " ----------------------------------------------------------------------------
 " Denite Plugins
