@@ -11,7 +11,6 @@ call plug#begin()
 let nvimDir  = '$HOME/.config/nvim'
 let cacheDir = expand(nvimDir . '/.cache')
 
-
 " ----------------------------------------------------------------------------
 " MARK: - Basic Useful Functions
 " ----------------------------------------------------------------------------
@@ -175,8 +174,9 @@ let g:gruvbox_bold = 0
 " ----------------------------------------------------------------------------
 
 Plug 'vim-airline/vim-airline'
-Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'zhaocai/GoldenView.Vim', {'on': '<Plug>ToggleGoldenViewAutoResize'}
+Plug 'luochen1990/rainbow'
+Plug 'thiagoalessio/rainbow_levels.vim'
 
 " Vim Airline setup
 let g:airline_powerline_fonts = 0
@@ -186,6 +186,21 @@ let g:airline#extensions#whitespace#mixed_indent_algo = 2
 " GoldenView setup
 let g:goldenview__enable_default_mapping=0
 nmap <F4> <Plug>ToggleGoldenViewAutoResize
+
+" Rainbow Parentheses setup
+let g:rainbow_conf = {'ctermfgs': ['245', '142', '109', '175', '167', '208', '214', '223']}
+
+" Rainbow Levers setup
+let g:rainbow_levels = [
+	\{'ctermfg': 142, 'guifg': '#b8bb26'},
+	\{'ctermfg': 108, 'guifg': '#8ec07c'},
+	\{'ctermfg': 109, 'guifg': '#83a598'},
+	\{'ctermfg': 175, 'guifg': '#d3869b'},
+	\{'ctermfg': 167, 'guifg': '#fb4934'},
+	\{'ctermfg': 208, 'guifg': '#fe8019'},
+	\{'ctermfg': 214, 'guifg': '#fabd2f'},
+	\{'ctermfg': 223, 'guifg': '#ebdbb2'},
+	\{'ctermfg': 245, 'guifg': '#928374'}]
 
 
 " ----------------------------------------------------------------------------
@@ -214,7 +229,6 @@ nnoremap <F1> :Startify<cr>
 " ----------------------------------------------------------------------------
 
 Plug 'editorconfig/editorconfig-vim'
-Plug 'luochen1990/rainbow'
 
 Plug 'kristijanhusak/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs'
