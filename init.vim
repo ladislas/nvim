@@ -301,10 +301,12 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer', 'for': ['cpp', 'c', 'h', 'ino']}
 Plug 'SirVer/ultisnips'
+Plug 'tenfyzhong/CompleteParameter.vim'
 Plug 'ladislas/vim-snippets'
 
 " Deoplete setup
 let g:deoplete#enable_at_startup = 1
+autocmd FileType h,c,cpp let b:deoplete_disable_auto_complete = 1
 
 inoremap <silent><expr> <TAB>
 			\ pumvisible() ? "\<C-n>" :
@@ -322,9 +324,20 @@ function! s:check_back_space() abort
 endfunction
 
 " YouCompleteMe setup
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_error_symbol = '>>'
 let g:ycm_warning_symbol = '!!'
+
+" CompleteParameter setup
+inoremap <silent><expr> ( complete_parameter#pre_complete("()")
+smap <c-j> <Plug>(complete_parameter#goto_next_parameter)
+imap <c-j> <Plug>(complete_parameter#goto_next_parameter)
+smap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
+imap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
+
+let g:AutoPairs = {'[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
+inoremap <buffer><silent> ) <C-R>=AutoPairsInsert(')')<CR>
 
 " UltiSnips setup
 let g:UltiSnipsExpandTrigger='<c-e>'
