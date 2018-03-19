@@ -268,6 +268,11 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
 " Swift
 Plug 'keith/swift.vim'
 
+" Ruby
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+
 " Markdown
 autocmd BufRead,BufNewFile *.md,*.markdown setlocal filetype=pandoc.markdown " Automatically set filetype for Markdown files"
 Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
@@ -299,14 +304,14 @@ Plug 'autozimu/LanguageClient-neovim', {
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer', 'for': ['cpp', 'c', 'h', 'ino']}
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer', 'for': ['cpp', 'c', 'h', 'ino', 'ruby']}
 Plug 'SirVer/ultisnips'
 Plug 'tenfyzhong/CompleteParameter.vim'
 Plug 'ladislas/vim-snippets'
 
 " Deoplete setup
 let g:deoplete#enable_at_startup = 1
-autocmd FileType h,c,cpp let b:deoplete_disable_auto_complete = 1
+autocmd FileType h,c,cpp,ruby let b:deoplete_disable_auto_complete = 1
 
 inoremap <silent><expr> <TAB>
 			\ pumvisible() ? "\<C-n>" :
