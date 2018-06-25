@@ -341,9 +341,6 @@ imap <c-j> <Plug>(complete_parameter#goto_next_parameter)
 smap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
 imap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
 
-let g:AutoPairs = {'[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
-inoremap <buffer><silent> ) <C-R>=AutoPairsInsert(')')<CR>
-
 " UltiSnips setup
 let g:UltiSnipsExpandTrigger='<c-e>'
 let g:UltiSnipsJumpForwardTrigger='<c-j>'
