@@ -235,7 +235,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/vim-easy-align'
 
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
+Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-repeat'
 
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
@@ -305,6 +305,8 @@ Plug 'autozimu/LanguageClient-neovim', {
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer', 'for': ['cpp', 'c', 'h', 'ino', 'ruby']}
+Plug 'jerrymarino/iCompleteMe', { 'do': './install.py', 'for': ['swift']}
+
 Plug 'SirVer/ultisnips'
 Plug 'tenfyzhong/CompleteParameter.vim'
 Plug 'ladislas/vim-snippets'
