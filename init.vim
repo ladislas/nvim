@@ -235,7 +235,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/vim-easy-align'
 
 Plug 'tpope/vim-surround'
-Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
@@ -250,6 +250,8 @@ nmap ga <Plug>(EasyAlign)
 " Undotree setup
 nnoremap <silent> <F5> :UndotreeToggle<CR>
 
+" Comment strings
+autocmd FileType c,cpp,cs,java setlocal commentstring=//\ %s
 
 " ----------------------------------------------------------------------------
 " MARK: - Language Plugins
