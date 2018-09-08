@@ -270,6 +270,9 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
 " Swift
 Plug 'keith/swift.vim'
 
+" YAML
+Plug 'chase/vim-ansible-yaml'
+
 " Ruby
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
@@ -305,9 +308,12 @@ Plug 'autozimu/LanguageClient-neovim', {
 			\ }
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'mitsuse/autocomplete-swift'
+autocmd FileType swift imap <buffer> <C-k> <Plug>(autocomplete_swift_jump_to_placeholder)
+autocmd BufNewFile,BufRead *.swift set filetype=swift
 
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer', 'for': ['cpp', 'c', 'h', 'ino', 'ruby']}
-Plug 'jerrymarino/iCompleteMe', { 'do': './install.py', 'for': ['swift']}
+" Plug 'jerrymarino/iCompleteMe', { 'do': './install.py', 'for': ['swift']}
 
 Plug 'SirVer/ultisnips'
 Plug 'tenfyzhong/CompleteParameter.vim'
