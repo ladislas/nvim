@@ -192,15 +192,15 @@ let g:rainbow_conf = {'ctermfgs': ['245', '142', '109', '175', '167', '208', '21
 
 " Rainbow Levers setup
 let g:rainbow_levels = [
-	\{'ctermfg': 142, 'guifg': '#b8bb26'},
-	\{'ctermfg': 108, 'guifg': '#8ec07c'},
-	\{'ctermfg': 109, 'guifg': '#83a598'},
-	\{'ctermfg': 175, 'guifg': '#d3869b'},
-	\{'ctermfg': 167, 'guifg': '#fb4934'},
-	\{'ctermfg': 208, 'guifg': '#fe8019'},
-	\{'ctermfg': 214, 'guifg': '#fabd2f'},
-	\{'ctermfg': 223, 'guifg': '#ebdbb2'},
-	\{'ctermfg': 245, 'guifg': '#928374'}]
+			\{'ctermfg': 142, 'guifg': '#b8bb26'},
+			\{'ctermfg': 108, 'guifg': '#8ec07c'},
+			\{'ctermfg': 109, 'guifg': '#83a598'},
+			\{'ctermfg': 175, 'guifg': '#d3869b'},
+			\{'ctermfg': 167, 'guifg': '#fb4934'},
+			\{'ctermfg': 208, 'guifg': '#fe8019'},
+			\{'ctermfg': 214, 'guifg': '#fabd2f'},
+			\{'ctermfg': 223, 'guifg': '#ebdbb2'},
+			\{'ctermfg': 245, 'guifg': '#928374'}]
 
 
 " ----------------------------------------------------------------------------
@@ -269,6 +269,11 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
 
 " Swift
 Plug 'keith/swift.vim'
+Plug 'mitsuse/autocomplete-swift'
+" Plug 'neomake/neomake'
+
+let g:neomake_error_sign = {'text': '✖', 'texthl': 'NeomakeErrorSign'}
+let g:neomake_warning_sign = { 'text': '⚠️','texthl': 'NeomakeWarningSign'}
 
 " YAML
 Plug 'chase/vim-ansible-yaml'
@@ -308,12 +313,12 @@ Plug 'autozimu/LanguageClient-neovim', {
 			\ }
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'mitsuse/autocomplete-swift'
+
+Plug 'mitsuse/autocomplete-swift'
 autocmd FileType swift imap <buffer> <C-k> <Plug>(autocomplete_swift_jump_to_placeholder)
 autocmd BufNewFile,BufRead *.swift set filetype=swift
 
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer', 'for': ['cpp', 'c', 'h', 'ino', 'ruby']}
-" Plug 'jerrymarino/iCompleteMe', { 'do': './install.py', 'for': ['swift']}
 
 Plug 'SirVer/ultisnips'
 Plug 'tenfyzhong/CompleteParameter.vim'
@@ -419,7 +424,21 @@ call plug#end()
 
 
 " ----------------------------------------------------------------------------
-" Denite Setup
+" Misc setup
+" ----------------------------------------------------------------------------
+
+" When writing a buffer (no delay).
+" call neomake#configure#automake('w')
+" When writing a buffer (no delay), and on normal mode changes (after 750ms).
+" call neomake#configure#automake('nw', 750)
+" When reading a buffer (after 1s), and when writing (no delay).
+" call neomake#configure#automake('rw', 1000)
+" Full config: when writing or reading a buffer, and on changes in insert and
+" normal mode (after 1s; no delay when writing).
+" call neomake#configure#automake('nrwi', 500)
+
+" ----------------------------------------------------------------------------
+" denite setup
 " ----------------------------------------------------------------------------
 
 call denite#custom#option('default', 'prompt', '>')
