@@ -240,6 +240,14 @@ Plug 'tpope/vim-repeat'
 
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 
+" Multiple cursors
+function g:Multiple_cursors_before()
+	call deoplete#custom#buffer_option('auto_complete', v:false)
+endfunction
+function g:Multiple_cursors_after()
+	call deoplete#custom#buffer_option('auto_complete', v:true)
+endfunction
+
 " Rainbow
 let g:rainbow_active = 1
 
@@ -269,19 +277,9 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
 
 " Swift
 Plug 'keith/swift.vim'
-Plug 'mitsuse/autocomplete-swift'
-" Plug 'neomake/neomake'
-
-let g:neomake_error_sign = {'text': '✖', 'texthl': 'NeomakeErrorSign'}
-let g:neomake_warning_sign = { 'text': '⚠️','texthl': 'NeomakeWarningSign'}
 
 " YAML
 Plug 'chase/vim-ansible-yaml'
-
-" Ruby
-autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 
 " Markdown
 autocmd BufRead,BufNewFile *.md,*.markdown setlocal filetype=pandoc.markdown " Automatically set filetype for Markdown files"
@@ -314,19 +312,18 @@ Plug 'autozimu/LanguageClient-neovim', {
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-Plug 'mitsuse/autocomplete-swift'
-autocmd FileType swift imap <buffer> <C-k> <Plug>(autocomplete_swift_jump_to_placeholder)
-autocmd BufNewFile,BufRead *.swift set filetype=swift
-
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer', 'for': ['cpp', 'c', 'h', 'ino', 'ruby']}
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer', 'for': ['cpp', 'c', 'h', 'ino']}
 
 Plug 'SirVer/ultisnips'
 Plug 'tenfyzhong/CompleteParameter.vim'
 Plug 'ladislas/vim-snippets'
 
 " Deoplete setup
-let g:deoplete#enable_at_startup = 1
-autocmd FileType h,c,cpp,ruby let b:deoplete_disable_auto_complete = 1
+let g:deoplete#enable_at_startup = 0
+autocmd InsertEnter * call deoplete#enable()
+
+autocmd FileType h,c,cpp let b:deoplete_disable_auto_complete = 1
+autocmd FileType h,c,cpp call deoplete#custom#buffer_option('auto_complete', v:false)
 
 inoremap <silent><expr> <TAB>
 			\ pumvisible() ? "\<C-n>" :
