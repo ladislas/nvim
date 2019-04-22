@@ -321,8 +321,6 @@ Plug 'ladislas/vim-snippets'
 " Deoplete setup
 let g:deoplete#enable_at_startup = 0
 autocmd InsertEnter * call deoplete#enable()
-
-autocmd FileType h,c,cpp let b:deoplete_disable_auto_complete = 1
 autocmd FileType h,c,cpp call deoplete#custom#buffer_option('auto_complete', v:false)
 
 inoremap <silent><expr> <TAB>
