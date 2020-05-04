@@ -164,6 +164,7 @@ set background=dark
 " ----------------------------------------------------------------------------
 
 Plug 'morhetz/gruvbox'
+Plug 'arcticicestudio/nord-vim'
 
 " Gruvbox setup
 let g:gruvbox_bold = 0
@@ -312,8 +313,7 @@ Plug 'autozimu/LanguageClient-neovim', {
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer', 'for': ['cpp', 'c', 'h', 'ino']}
-" Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --clangd-completer', 'for': ['cpp', 'c', 'h', 'ino']}
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --clangd-completer', 'for': ['cpp', 'c', 'h', 'ino']}
 
 Plug 'SirVer/ultisnips'
 Plug 'tenfyzhong/CompleteParameter.vim'
@@ -342,18 +342,13 @@ function! s:check_back_space() abort
 endfunction
 
 " YouCompleteMe setup
-" let g:ycm_clangd_args = ["-background-index"]
+let g:ycm_key_list_previous_completion = ['<S-TAB>', '<Up>']
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
-let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_error_symbol = '>>'
 let g:ycm_warning_symbol = '!!'
-" let g:ycm_use_clangd = 0
-" let g:ycm_filter_diagnostics = {
-"   \ "cpp": {
-"   \      "regex": [ "*register*"],
-"   \      "level": "error"
-"   \    }
-"   \ }
+let g:ycm_use_clangd = 0
+let g:ycm_goto_buffer_command = 'vertical-split'
+let g:ycm_autoclose_preview_window_after_insertion = 1
 
 " CompleteParameter setup
 inoremap <silent><expr> ( complete_parameter#pre_complete("()")
@@ -558,7 +553,9 @@ nmap <silent> <leader>sp :set spell!<CR>
 
 " Set color scheme
 colorscheme gruvbox
+" colorscheme nord
 
 " Finish tuning Vim
 filetype plugin indent on
 syntax on
+
