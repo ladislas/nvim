@@ -16,8 +16,6 @@ return {
 				"╚══════════════════════════════════╝",
 			}
 
-			dashboard.section.mru.val = 5
-
 			vim.keymap.set("n", "<F1>", ":Alpha<CR>", { silent = true })
 
 			alpha.setup(dashboard.config)
