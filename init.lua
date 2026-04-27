@@ -18,8 +18,8 @@ require("config.options")
 require("config.keymaps")
 require("config.autocmds")
 
--- Load plugins
-require("plugins")
+-- Load plugins via lazy.nvim
+require("config.lazy")
 
 -- Final setup
 vim.cmd("colorscheme gruvbox")
