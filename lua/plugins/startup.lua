@@ -16,6 +16,11 @@ return {
 				"╚══════════════════════════════════╝",
 			}
 
+			dashboard.section.buttons.val = {
+				dashboard.button("e", "  New file", "<cmd>ene <CR>"),
+				dashboard.button("q", "  Quit", "<cmd>qa <CR>"),
+			}
+
 			vim.keymap.set("n", "<F1>", ":Alpha<CR>", { silent = true })
 
 			alpha.setup(dashboard.config)
