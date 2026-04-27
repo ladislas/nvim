@@ -521,9 +521,6 @@ nnoremap <silent> k gk
 vnoremap < <gv
 vnoremap > >gv
 
-" Toggles smart indenting while pasting, A.K.A lifesaver
-set pastetoggle=<F6>
-
 " Reselect last paste
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
@@ -558,4 +555,3 @@ colorscheme gruvbox
 " Finish tuning Vim
 filetype plugin indent on
 syntax on
-
