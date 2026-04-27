@@ -32,7 +32,7 @@ function M.close_window_or_kill_buffer()
 		end
 	end
 
-	if vim.fn.matchstr(vim.fn.expand("%"), "NERD") == "NERD" then
+	if vim.bo.filetype == "neo-tree" then
 		vim.cmd("wincmd c")
 		return
 	end
