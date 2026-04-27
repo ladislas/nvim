@@ -1,30 +1,86 @@
 -- UI enhancements
 return {
 	{
-		"vim-airline/vim-airline",
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		lazy = false,
 		config = function()
-			vim.g.airline_powerline_fonts = 0
-			vim.g["airline#extensions#tabline#enabled"] = 1
-			vim.g["airline#extensions#whitespace#mixed_indent_algo"] = 2
+			require("lualine").setup({
+				options = {
+					icons_enabled = false,
+					theme = "auto",
+					component_separators = { left = "|", right = "|" },
+					section_separators = { left = "", right = "" },
+				},
+				sections = {
+					lualine_a = { "mode" },
+					lualine_b = { "branch", "diff", "diagnostics" },
+					lualine_c = { { "filename", path = 1 } },
+					lualine_x = { "encoding", "fileformat", "filetype" },
+					lualine_y = { "progress" },
+					lualine_z = { "location" },
+				},
+				tabline = {
+					lualine_a = { "buffers" },
+					lualine_z = { "tabs" },
+				},
+				extensions = {},
+			})
+
+			-- Whitespace mixed-indent detection (matches airline's mixed_indent_algo = 2)
+			local whitespace_ext = require("lualine.component"):extend()
+			whitespace_ext.init = function(self, _)
+				whitespace_ext.super.init(self, _)
+				self.status = ""
+			end
+			whitespace_ext.update_status = function(self)
+				local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+				local mixed_indent = false
+				local trailing_ws = false
+				for _, line in ipairs(lines) do
+					if line:match("^%s+") then
+						local leading = line:match("^(%s+)")
+						if leading:match("\t") and leading:match(" ") then
+							mixed_indent = true
+						end
+					end
+					if line:match("%s$") then
+						trailing_ws = true
+					end
+				end
+				local parts = {}
+				if mixed_indent then
+					table.insert(parts, "mix:")
+				end
+				if trailing_ws then
+					table.insert(parts, "trail:")
+				end
+				self.status = table.concat(parts, " ")
+				return self.status
+			end
 		end,
 	},
 	{
-		"zhaocai/GoldenView.Vim",
-		config = function()
-			vim.g.goldenview__enable_default_mapping = 0
-		end,
-		keys = {
-			{ "n", "<F4>", "<Plug>ToggleGoldenViewAutoResize" },
-		},
-	},
-	{
-		"luochen1990/rainbow",
+		"HiPhish/rainbow-delimiters.nvim",
 		lazy = false,
 		config = function()
-			vim.g.rainbow_active = 1
-			vim.g.rainbow_conf = {
-				ctermfgs = { "245", "142", "109", "175", "167", "208", "214", "223" },
+			local rainbow_delimiters = require("rainbow-delimiters")
+			vim.g.rainbow_delimiters = {
+				strategy = {
+					rainbow_delimiters.strategy["global"],
+				},
+				query = {
+					[""] = "rainbow-delimiters",
+				},
+				highlight = {
+					"RainbowDelimiterRed",
+					"RainbowDelimiterYellow",
+					"RainbowDelimiterBlue",
+					"RainbowDelimiterOrange",
+					"RainbowDelimiterGreen",
+					"RainbowDelimiterViolet",
+					"RainbowDelimiterCyan",
+				},
 			}
 		end,
 	},
