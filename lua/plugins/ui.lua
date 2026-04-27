@@ -5,41 +5,14 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		lazy = false,
 		config = function()
-			require("lualine").setup({
-				options = {
-					icons_enabled = false,
-					theme = "auto",
-					component_separators = { left = "|", right = "|" },
-					section_separators = { left = "", right = "" },
-				},
-				sections = {
-					lualine_a = { "mode" },
-					lualine_b = { "branch", "diff", "diagnostics" },
-					lualine_c = { { "filename", path = 1 } },
-					lualine_x = { "encoding", "fileformat", "filetype" },
-					lualine_y = { "progress" },
-					lualine_z = { "location" },
-				},
-				tabline = {
-					lualine_a = { "buffers" },
-					lualine_z = { "tabs" },
-				},
-				extensions = {},
-			})
-
-			-- Whitespace mixed-indent detection (matches airline's mixed_indent_algo = 2)
-			local whitespace_ext = require("lualine.component"):extend()
-			whitespace_ext.init = function(self, _)
-				whitespace_ext.super.init(self, _)
-				self.status = ""
-			end
-			whitespace_ext.update_status = function(self)
+			-- Custom whitespace component (matches airline's mixed_indent_algo = 2)
+			local function whitespace()
 				local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
 				local mixed_indent = false
 				local trailing_ws = false
 				for _, line in ipairs(lines) do
-					if line:match("^%s+") then
-						local leading = line:match("^(%s+)")
+					local leading = line:match("^(%s+)")
+					if leading then
 						if leading:match("\t") and leading:match(" ") then
 							mixed_indent = true
 						end
@@ -55,9 +28,30 @@ return {
 				if trailing_ws then
 					table.insert(parts, "trail:")
 				end
-				self.status = table.concat(parts, " ")
-				return self.status
+				return table.concat(parts, " ")
 			end
+
+			require("lualine").setup({
+				options = {
+					icons_enabled = false,
+					theme = "auto",
+					component_separators = { left = "|", right = "|" },
+					section_separators = { left = "", right = "" },
+				},
+				sections = {
+					lualine_a = { "mode" },
+					lualine_b = { "branch", "diff", "diagnostics" },
+					lualine_c = { { "filename", path = 1 } },
+					lualine_x = { whitespace, "encoding", "fileformat", "filetype" },
+					lualine_y = { "progress" },
+					lualine_z = { "location" },
+				},
+				tabline = {
+					lualine_a = { "buffers" },
+					lualine_z = { "tabs" },
+				},
+				extensions = {},
+			})
 		end,
 	},
 	{
