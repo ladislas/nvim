@@ -1,12 +1,21 @@
 -- Colorschemes
 return {
 	{
-		"morhetz/gruvbox",
+		"ellisonleao/gruvbox.nvim",
 		lazy = false,
 		priority = 1000,
 		config = function()
-			vim.g.gruvbox_bold = 0
+			require("gruvbox").setup({
+				bold = false,
+			})
 		end,
 	},
-	{ "arcticicestudio/nord-vim", lazy = false },
+	{
+		"AlexvZyl/nordic.nvim",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("nordic").setup({})
+		end,
+	},
 }

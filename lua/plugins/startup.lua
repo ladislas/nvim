@@ -1,17 +1,29 @@
 -- Startup / dashboard
 return {
 	{
-		"mhinz/vim-startify",
-		cmd = "Startify",
+		"goolord/alpha-nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
-			vim.g.startify_session_dir = require("config.utils").create_and_expand(
-				vim.g.cacheDir .. "/sessions"
-			)
-			vim.g.startify_change_to_vcs_root = 1
-			vim.g.startify_show_sessions = 1
+			local alpha = require("alpha")
+			local dashboard = require("alpha.themes.dashboard")
+
+			-- Ensure session directory exists
+			require("config.utils").create_and_expand(vim.g.cacheDir .. "/sessions")
+
+			dashboard.section.header.val = {
+				"╔══════════════════════════════════╗",
+				"║          nvim dashboard          ║",
+				"╚══════════════════════════════════╝",
+			}
+
+			dashboard.section.buttons.val = {
+				dashboard.button("e", "  New file", "<cmd>ene <CR>"),
+				dashboard.button("q", "  Quit", "<cmd>qa <CR>"),
+			}
+
+			vim.keymap.set("n", "<F1>", ":Alpha<CR>", { silent = true })
+
+			alpha.setup(dashboard.config)
 		end,
-		keys = {
-			{ "n", "<F1>", ":Startify<cr>" },
-		},
 	},
 }

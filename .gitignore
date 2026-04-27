@@ -46,6 +46,9 @@ Session.vim
 # Auto-generated tag files
 tags
 
+# Pi todos
+.pi/todos
+
 # Misc
 .cache
 *.pyc
