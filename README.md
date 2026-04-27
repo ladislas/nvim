@@ -1,20 +1,17 @@
 # nvim
 
-> Lean 'n' Clean Neovim Config
+> Lean 'n Clean Neovim Config
 
 ## How to use
 
 On OS X it's pretty easy:
 
 -   install [`homebrew`]
--   `brew install neovim/neovim/neovim`
+-   `brew install neovim`
 -   `brew install python`
 -   `pip install neovim`
--   `git clone --recursive https://github.com/ladislas/nvim ~/.config/nvim`
--   open Neovim with `nvim`, press `:` and then type `PlugInstall`
--   wait for the process to complete
--   close Neovim with `:q`
--   start Neovim
+-   `git clone https://github.com/ladislas/nvim ~/.config/nvim`
+-   open Neovim with `nvim` — plugins are installed automatically via [lazy.nvim](https://lazy.folke.io)
 
 You should be good to go! :)
 

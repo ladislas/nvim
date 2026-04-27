@@ -2,7 +2,21 @@
 " Lean 'n' Clean Neovim Config
 " ----------------------------------------------------------------------------
 
-call plug#begin()
+" Bootstrap lazy.nvim
+lua << EOF
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+EOF
 
 " ----------------------------------------------------------------------------
 " MARK: - Global Variables
@@ -163,8 +177,6 @@ set background=dark
 " MARK: - Colors Themes
 " ----------------------------------------------------------------------------
 
-Plug 'morhetz/gruvbox'
-Plug 'arcticicestudio/nord-vim'
 
 " Gruvbox setup
 let g:gruvbox_bold = 0
@@ -174,10 +186,6 @@ let g:gruvbox_bold = 0
 " MARK: - UI Plugins
 " ----------------------------------------------------------------------------
 
-Plug 'vim-airline/vim-airline'
-Plug 'zhaocai/GoldenView.Vim', {'on': '<Plug>ToggleGoldenViewAutoResize'}
-Plug 'luochen1990/rainbow'
-Plug 'thiagoalessio/rainbow_levels.vim'
 
 " Vim Airline setup
 let g:airline_powerline_fonts = 0
@@ -208,15 +216,12 @@ let g:rainbow_levels = [
 " MARK: - Buffer Plugins
 " ----------------------------------------------------------------------------
 
-Plug 'duff/vim-bufonly'
-Plug 'qpkorr/vim-bufkill'
 
 
 " ----------------------------------------------------------------------------
 " MARK: - Startup Plugins
 " ----------------------------------------------------------------------------
 
-Plug 'mhinz/vim-startify', {'on': 'Startify'}
 
 " Vim Startify setup
 let g:startify_session_dir = CreateAndExpand(cacheDir . '/sessions')
@@ -229,17 +234,9 @@ nnoremap <F1> :Startify<cr>
 " MARK: - Editing Plugins
 " ----------------------------------------------------------------------------
 
-Plug 'editorconfig/editorconfig-vim'
 
-Plug 'kristijanhusak/vim-multiple-cursors'
-Plug 'jiangmiao/auto-pairs'
-Plug 'junegunn/vim-easy-align'
 
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-repeat'
 
-Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 
 " Multiple cursors
 function g:Multiple_cursors_before()
@@ -267,26 +264,18 @@ autocmd FileType c,cpp,cs,java setlocal commentstring=//\ %s
 " ----------------------------------------------------------------------------
 
 " Misc
-Plug 'tpope/vim-endwise'
 
 " Vim Polyglote
-Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled = ['markdown', 'c', 'cpp', 'h']
 
 " C++
-Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['cpp', 'c', 'h'] }
 
 " Swift
-Plug 'keith/swift.vim'
 
 " YAML
-Plug 'chase/vim-ansible-yaml'
 
 " Markdown
 autocmd BufRead,BufNewFile *.md,*.markdown setlocal filetype=pandoc.markdown " Automatically set filetype for Markdown files"
-Plug 'vim-pandoc/vim-pandoc', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
-Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
-Plug 'shime/vim-livedown', { 'for': ['markdown', 'pandoc.markdown', 'md'] }
 
 " Pandoc setup
 let g:pandoc#syntax#conceal#use = 0
@@ -306,20 +295,6 @@ map <leader>gm :call LivedownPreview()<CR>
 " Autocompletion & Snippets Plugins
 " ----------------------------------------------------------------------------
 
-Plug 'autozimu/LanguageClient-neovim', {
-			\ 'branch': 'next',
-			\ 'do': 'bash install.sh',
-			\ }
-
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --clangd-completer', 'for': ['cpp', 'c', 'h', 'ino']}
-
-Plug 'SirVer/ultisnips'
-Plug 'tenfyzhong/CompleteParameter.vim'
-Plug 'ladislas/vim-snippets'
-
-" Plug 'arakashic/chromatica.nvim', { 'for':  ['cpp', 'c', 'h', 'ino']}
 
 " Deoplete setup
 let g:deoplete#enable_at_startup = 0
@@ -361,23 +336,19 @@ imap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
 let g:UltiSnipsExpandTrigger='<c-e>'
 let g:UltiSnipsJumpForwardTrigger='<c-j>'
 let g:UltiSnipsJumpBackwardTrigger='<c-k>'
-" let g:UltiSnipsSnippetsDir=plugDir.'/vim-snippets/UltiSnips'
+" let g:UltiSnipsSnippetsDir=stdpath('data').'/lazy/vim-snippets/UltiSnips'
 
 
 " ----------------------------------------------------------------------------
 " Denite Plugins
 " ----------------------------------------------------------------------------
 
-Plug 'Shougo/denite.nvim'
-Plug 'Shougo/neoyank.vim'
 
 
 " ----------------------------------------------------------------------------
 " MARK: - Navigation Plugins
 " ----------------------------------------------------------------------------
 
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " NERDTree setup
 let NERDTreeShowHidden=0
@@ -397,8 +368,6 @@ nnoremap <F3> :NERDTreeFind<CR>
 " Source Control Management Plugins
 " ----------------------------------------------------------------------------
 
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
 
 " Gitgutter setup
 let g:gitgutter_realtime=0
@@ -421,7 +390,7 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " MARK: - Stop Loading Plugins
 " ----------------------------------------------------------------------------
 
-call plug#end()
+lua require("plugins")
 
 
 " ----------------------------------------------------------------------------

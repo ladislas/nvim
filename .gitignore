@@ -1,4 +1,3 @@
-plugged
 .cache
 *.pyc
 .netrwhist
@@ -48,7 +47,6 @@ Session.vim
 tags
 
 # Misc
-plugged
 .cache
 *.pyc
 .netrwhist
