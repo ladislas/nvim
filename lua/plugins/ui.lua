@@ -28,20 +28,4 @@ return {
 			}
 		end,
 	},
-	{
-		"thiagoalessio/rainbow_levels.vim",
-		config = function()
-			vim.g.rainbow_levels = {
-				{ ctermfg = 142, guifg = "#b8bb26" },
-				{ ctermfg = 108, guifg = "#8ec07c" },
-				{ ctermfg = 109, guifg = "#83a598" },
-				{ ctermfg = 175, guifg = "#d3869b" },
-				{ ctermfg = 167, guifg = "#fb4934" },
-				{ ctermfg = 208, guifg = "#fe8019" },
-				{ ctermfg = 214, guifg = "#fabd2f" },
-				{ ctermfg = 223, guifg = "#ebdbb2" },
-				{ ctermfg = 245, guifg = "#928374" },
-			}
-		end,
-	},
 }
