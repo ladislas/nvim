@@ -1,4 +1,4 @@
--- Completion and snippets (replaces UltiSnips + Deoplete)
+-- Completion and snippets
 return {
 	-- Snippet engine
 	{
