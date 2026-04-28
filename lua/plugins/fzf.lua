@@ -1,4 +1,4 @@
--- Fuzzy finder: fzf-lua (replaces Denite)
+-- Fuzzy finder (fzf-lua)
 return {
 	{
 		"ibhagwan/fzf-lua",
